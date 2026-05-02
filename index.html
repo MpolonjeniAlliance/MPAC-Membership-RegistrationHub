@@ -37,6 +37,7 @@
     .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 10px 14px; background: white; border: 1px solid #e2e8f0; border-radius: 18px; font-family: inherit; }
     .radio-group { display: flex; gap: 24px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
     .phone-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .photo-preview { width: 100px; height: 100px; object-fit: cover; border-radius: 12px; margin-top: 8px; border: 2px solid var(--primary); }
     .btn-gold { background: linear-gradient(95deg, var(--primary), var(--primary-dark)); border: none; padding: 14px; border-radius: 60px; font-weight: 800; color: white; cursor: pointer; width: 100%; transition: 0.2s; }
     .btn-gold:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-outline { background: rgba(0,51,204,0.08); border: 1px solid var(--pink); padding: 8px 18px; border-radius: 60px; cursor: pointer; font-weight: 600; transition: 0.2s; }
@@ -44,6 +45,9 @@
     .checkbox-label { display: flex; align-items: center; gap: 12px; margin: 16px 0 12px; }
     .inline-note { font-size: 0.7rem; color: #64748b; margin-top: 8px; }
     .toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary-dark); color: white; padding: 10px 20px; border-radius: 40px; display: none; z-index: 2100; font-weight: bold; box-shadow: var(--shadow); }
+    .children-names-container { margin-top: 8px; }
+    .child-name-input { margin-bottom: 8px; }
+    .child-name-input input { width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 16px; }
     @media (max-width: 800px) { .phone-row { grid-template-columns: 1fr; } .form-grid { padding: 16px; } }
   </style>
 </head>
@@ -61,7 +65,7 @@
     </div>
   </div>
 
-  <!-- REGISTRATION ONLY – no tabs -->
+  <!-- REGISTRATION FORM -->
   <div class="glass-card">
     <div class="card-header"><h3><i class="fas fa-pen-ruler"></i> Member Registration Form</h3><button class="btn-outline" id="resetFormBtn"><i class="fas fa-undo-alt"></i> Clear Form</button></div>
     <form id="memberForm">
@@ -79,6 +83,13 @@
           <div class="input-group"><label>Email *</label><input type="email" id="email" required></div>
           <div class="input-group"><label>Next of Kin</label><input type="text" id="nextOfKin"></div>
           <div class="input-group"><label>Children count</label><input type="number" id="childrenCount" min="0" value="0"></div>
+          <div id="childrenNamesContainer" class="children-names-container"></div>
+          <div class="input-group">
+            <label><i class="fas fa-camera"></i> Member Photo (Optional)</label>
+            <input type="file" id="photoUpload" accept="image/jpeg,image/png,image/jpg">
+            <div id="photoPreviewContainer"></div>
+            <small class="inline-note">Max 5MB. JPG or PNG. Photo will be stored as Base64 in the sheet.</small>
+          </div>
         </div>
         <div class="form-section">
           <h4><i class="fas fa-church" style="color:var(--pink);"></i> Spiritual Information</h4>
@@ -109,14 +120,16 @@
 <div id="toast" class="toast"></div>
 
 <script>
-  // ========== 🔴 REPLACE THIS URL WITH YOUR DEPLOYED WEB APP URL 🔴 ==========
-  const API_BASE = "https://script.google.com/macros/s/AKfycbzO0roUGXv_cozk1hHI-TsPZ5Oq7JWKSc0RXYK-lCava725nQyN_NBMdZBI20-9NH_p/exec";
-  // =========================================================================
+  // ========== CONFIGURATION ==========
+  const API_BASE = "https://script.google.com/macros/s/AKfycbw-iBbVUwSI3pEncHBB0lE4yGsSeE3h4c-PZ0yh7eNMDHkxnwvxulf8a194DJlmcGVZ/exec";
+  // ===================================
 
   let members = [];
   let editId = null;
   let isSaving = false;
+  let currentPhotoBase64 = null;   // stores base64 of newly selected photo
 
+  // Helper: show toast message
   function showToast(msg, isErr = false) {
     const toast = document.getElementById('toast');
     toast.textContent = msg;
@@ -136,6 +149,7 @@
     }
   }
 
+  // Fetch all members from backend
   async function fetchMembers() {
     try {
       setSyncStatus(true);
@@ -159,8 +173,10 @@
     }
   }
 
+  // Add member (POST with no-cors)
   async function addMember(data) {
     try {
+      console.log('Sending add request, photoBase64 present?', !!data.photoBase64);
       await fetch(API_BASE, {
         method: 'POST',
         mode: 'no-cors',
@@ -174,8 +190,10 @@
     }
   }
 
+  // Update member
   async function updateMember(id, data) {
     try {
+      console.log('Sending update request, photoBase64 present?', !!data.photoBase64);
       await fetch(API_BASE, {
         method: 'POST',
         mode: 'no-cors',
@@ -189,18 +207,20 @@
     }
   }
 
+  // Delete member
   async function deleteMember(id) {
-    if (!confirm('⚠️ Permanently delete this member? This cannot be undone.')) return;
+    if (!confirm('⚠️ Permanently delete this member?')) return;
     try {
       await fetch(`${API_BASE}?action=delete&id=${id}`, { mode: 'no-cors' });
       await fetchMembers();
       showToast('Member deleted');
       if (editId === id) cancelEdit();
     } catch (err) {
-      showToast('Error deleting - check connection', true);
+      showToast('Error deleting', true);
     }
   }
 
+  // Populate form for editing
   function editMember(id) {
     const m = members.find(x => x.id === id);
     if (!m) return;
@@ -217,7 +237,9 @@
     document.getElementById('phoneCell').value = m.phoneCell || '';
     document.getElementById('email').value = m.email || '';
     document.getElementById('nextOfKin').value = m.nextOfKin || '';
-    document.getElementById('childrenCount').value = m.childrenCount || 0;
+    const childrenCount = parseInt(m.childrenCount) || 0;
+    document.getElementById('childrenCount').value = childrenCount;
+    generateChildrenNameFields(childrenCount, m.childrenNames);
     if (m.memberOfDenomination === 'yes') document.querySelector('input[name="denomMember"][value="yes"]').checked = true;
     else document.querySelector('input[name="denomMember"][value="no"]').checked = true;
     toggleDenominationFields();
@@ -234,9 +256,16 @@
     document.getElementById('declarationName').value = m.declarationName || '';
     document.getElementById('declarationDate').value = m.declarationDate || '';
     document.getElementById('commitmentCheckbox').checked = m.commitmentAgreed === true;
+    // existing photo (Base64)
+    if (m.photoBase64) {
+      document.getElementById('photoPreviewContainer').innerHTML = `<img src="data:image/jpeg;base64,${m.photoBase64}" class="photo-preview" alt="Current Photo"><br><small>Existing photo</small>`;
+      currentPhotoBase64 = null; // don't overwrite unless new photo chosen
+    } else {
+      document.getElementById('photoPreviewContainer').innerHTML = '';
+    }
     document.getElementById('submitBtn').innerHTML = '<i class="fas fa-edit"></i> Update Member';
     document.getElementById('cancelEditBtn').style.display = 'inline-block';
-    showToast('✏️ Editing mode – make changes and click Update');
+    showToast('✏️ Editing mode – you can replace the photo');
   }
 
   function cancelEdit() {
@@ -244,21 +273,72 @@
     resetForm();
     document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Register Member';
     document.getElementById('cancelEditBtn').style.display = 'none';
+    currentPhotoBase64 = null;
+    document.getElementById('photoUpload').value = '';
+    document.getElementById('photoPreviewContainer').innerHTML = '';
   }
 
   function resetForm() {
     document.getElementById('memberForm').reset();
     document.getElementById('declarationDate').valueAsDate = new Date();
     document.getElementById('childrenCount').value = 0;
+    generateChildrenNameFields(0, '');
     document.querySelector('input[name="denomMember"][value="no"]').checked = true;
     toggleDenominationFields();
     document.querySelector('input[name="bornAgain"][value="no"]').checked = true;
     toggleBornAgainYear();
+    currentPhotoBase64 = null;
+    document.getElementById('photoUpload').value = '';
+    document.getElementById('photoPreviewContainer').innerHTML = '';
   }
 
+  // Generate dynamic input fields for children names
+  function generateChildrenNameFields(count, existingNamesStr = '') {
+    const container = document.getElementById('childrenNamesContainer');
+    container.innerHTML = '';
+    if (count <= 0) return;
+    const existingNames = existingNamesStr ? existingNamesStr.split(',').map(s => s.trim()) : [];
+    for (let i = 1; i <= count; i++) {
+      const div = document.createElement('div');
+      div.className = 'child-name-input';
+      const label = document.createElement('label');
+      label.textContent = `Child ${i} Name`;
+      label.style.fontSize = '0.7rem';
+      label.style.fontWeight = '700';
+      label.style.color = 'var(--primary)';
+      label.style.textTransform = 'uppercase';
+      label.style.display = 'block';
+      label.style.marginBottom = '4px';
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = `Full name of child ${i}`;
+      input.className = 'form-control';
+      input.style.width = '100%';
+      input.style.padding = '8px 12px';
+      input.style.border = '1px solid #e2e8f0';
+      input.style.borderRadius = '16px';
+      if (existingNames[i-1]) input.value = existingNames[i-1];
+      div.appendChild(label);
+      div.appendChild(input);
+      container.appendChild(div);
+    }
+  }
+
+  // Collect children names as comma‑separated string
+  function getChildrenNames() {
+    const container = document.getElementById('childrenNamesContainer');
+    const inputs = container.querySelectorAll('input');
+    const names = [];
+    inputs.forEach(input => {
+      if (input.value.trim()) names.push(input.value.trim());
+    });
+    return names.join(',');
+  }
+
+  // Gather all form data including photoBase64 if a new photo was selected
   function getFormData() {
     const isDenom = document.querySelector('input[name="denomMember"]:checked').value === 'yes';
-    return {
+    const data = {
       fullName: document.getElementById('fullName').value.trim(),
       dob: document.getElementById('dob').value,
       maritalStatus: document.getElementById('maritalStatus').value,
@@ -272,6 +352,7 @@
       email: document.getElementById('email').value.trim(),
       nextOfKin: document.getElementById('nextOfKin').value,
       childrenCount: parseInt(document.getElementById('childrenCount').value) || 0,
+      childrenNames: getChildrenNames(),
       memberOfDenomination: isDenom ? 'yes' : 'no',
       associateChurchName: isDenom ? document.getElementById('associateChurchName').value : '',
       pastorDetails: isDenom ? document.getElementById('pastorDetails').value : '',
@@ -284,19 +365,26 @@
       declarationDate: document.getElementById('declarationDate').value,
       commitmentAgreed: document.getElementById('commitmentCheckbox').checked
     };
+    // Only include photoBase64 if a new photo was uploaded
+    if (currentPhotoBase64) {
+      data.photoBase64 = currentPhotoBase64;
+      console.log('✅ Adding photoBase64 to payload, length:', currentPhotoBase64.length);
+    }
+    return data;
   }
 
   function validateFormData(data) {
-    if (!data.fullName) { showToast('Full name is required', true); return false; }
-    if (!data.idNumber) { showToast('ID Number is required', true); return false; }
-    if (!data.phoneCell) { showToast('Cell phone number is required', true); return false; }
+    if (!data.fullName) { showToast('Full name required', true); return false; }
+    if (!data.idNumber) { showToast('ID Number required', true); return false; }
+    if (!data.phoneCell) { showToast('Cell phone required', true); return false; }
     if (!data.email || !data.email.includes('@')) { showToast('Valid email required', true); return false; }
     if (!data.dob) { showToast('Date of Birth required', true); return false; }
     if (!data.declarationName) { showToast('Declaration name required', true); return false; }
-    if (!data.commitmentAgreed) { showToast('You must agree to the declaration', true); return false; }
+    if (!data.commitmentAgreed) { showToast('Must agree to the declaration', true); return false; }
     return true;
   }
 
+  // Submit handler
   document.getElementById('memberForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     if (isSaving) return;
@@ -327,6 +415,53 @@
     }
   });
 
+  // Convert File to base64 (without the data:image/... prefix)
+  function fileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.onerror = error => reject(error);
+    });
+  }
+
+  // Handle photo selection
+  document.getElementById('photoUpload').addEventListener('change', async function(e) {
+    const file = e.target.files[0];
+    if (!file) {
+      currentPhotoBase64 = null;
+      document.getElementById('photoPreviewContainer').innerHTML = '';
+      console.log('Photo cleared');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('Photo too large (max 5MB)', true);
+      this.value = '';
+      return;
+    }
+    try {
+      const base64 = await fileToBase64(file);
+      currentPhotoBase64 = base64;
+      console.log('✅ Photo loaded, base64 length:', base64.length);
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        document.getElementById('photoPreviewContainer').innerHTML = `<img src="${ev.target.result}" class="photo-preview" alt="Preview">`;
+      };
+      reader.readAsDataURL(file);
+    } catch (err) {
+      console.error('Photo read error:', err);
+      showToast('Error reading photo', true);
+    }
+  });
+
+  // Dynamic children name fields when children count changes
+  document.getElementById('childrenCount').addEventListener('input', function(e) {
+    let count = parseInt(e.target.value) || 0;
+    if (count < 0) count = 0;
+    generateChildrenNameFields(count, '');
+  });
+
+  // Conditional fields for denomination and born again
   function toggleDenominationFields() {
     const isMember = document.querySelector('input[name="denomMember"]:checked').value === 'yes';
     document.getElementById('associateChurchGroup').style.display = isMember ? 'block' : 'none';
@@ -344,14 +479,13 @@
 
   document.querySelectorAll('input[name="denomMember"]').forEach(r => r.addEventListener('change', toggleDenominationFields));
   document.querySelectorAll('input[name="bornAgain"]').forEach(r => r.addEventListener('change', toggleBornAgainYear));
-
   document.getElementById('resetFormBtn')?.addEventListener('click', () => cancelEdit());
   document.getElementById('cancelEditBtn')?.addEventListener('click', cancelEdit);
 
-  // Expose global functions for inline onclick
   window.editMember = editMember;
   window.deleteMember = deleteMember;
 
+  // Initialise
   toggleDenominationFields();
   toggleBornAgainYear();
   document.getElementById('declarationDate').valueAsDate = new Date();
