@@ -36,7 +36,35 @@
     .input-group label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-bottom: 6px; }
     .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 10px 14px; background: white; border: 1px solid #e2e8f0; border-radius: 18px; font-family: inherit; }
     .radio-group { display: flex; gap: 24px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
-    .phone-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .phone-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 8px; }
+    .contact-details-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0 12px 0;
+      padding-bottom: 6px;
+      border-bottom: 2px dashed rgba(0,51,204,0.2);
+    }
+    .contact-details-header h5 {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.2px;
+      margin: 0;
+    }
+    .contact-details-header i {
+      color: var(--pink);
+      font-size: 1rem;
+    }
+    .required-hint {
+      font-size: 0.65rem;
+      background: rgba(194,24,91,0.1);
+      padding: 2px 8px;
+      border-radius: 40px;
+      color: var(--pink);
+      font-weight: 500;
+      margin-left: 8px;
+    }
     .photo-preview { width: 100px; height: 100px; object-fit: cover; border-radius: 12px; margin-top: 8px; border: 2px solid var(--primary); }
     .btn-gold { background: linear-gradient(95deg, var(--primary), var(--primary-dark)); border: none; padding: 14px; border-radius: 60px; font-weight: 800; color: white; cursor: pointer; width: 100%; transition: 0.2s; }
     .btn-gold:disabled { opacity: 0.6; cursor: not-allowed; }
@@ -79,7 +107,20 @@
           <div class="input-group"><label>ID Number *</label><input type="text" id="idNumber" required></div>
           <div class="input-group"><label>Postal Address</label><input type="text" id="postalAddress"></div>
           <div class="input-group"><label>Physical Address</label><input type="text" id="physicalAddress"></div>
-          <div class="phone-row"><div class="input-group"><label>Home</label><input type="tel" id="phoneHome"></div><div class="input-group"><label>Work</label><input type="tel" id="phoneWork"></div><div class="input-group"><label>Cell *</label><input type="tel" id="phoneCell" required></div></div>
+          
+          <!-- CONTACT DETAILS HEADER (NEW) for Home, Work, Cell -->
+          <div class="contact-details-header">
+            <i class="fas fa-address-card"></i>
+            <h5>Contact Details <span style="font-weight:400;">(Home · Work · Cell*)</span></h5>
+            <span class="required-hint"><i class="fas fa-asterisk" style="font-size: 8px;"></i> Cell required</span>
+          </div>
+          
+          <div class="phone-row">
+            <div class="input-group"><label>Home</label><input type="tel" id="phoneHome" placeholder="e.g., 011 123 4567"></div>
+            <div class="input-group"><label>Work</label><input type="tel" id="phoneWork" placeholder="e.g., 010 987 6543"></div>
+            <div class="input-group"><label>Cell *</label><input type="tel" id="phoneCell" required placeholder="071 234 5678"></div>
+          </div>
+          
           <div class="input-group"><label>Email *</label><input type="email" id="email" required></div>
           <div class="input-group"><label>Next of Kin</label><input type="text" id="nextOfKin"></div>
           <div class="input-group"><label>Children count</label><input type="number" id="childrenCount" min="0" value="0"></div>
