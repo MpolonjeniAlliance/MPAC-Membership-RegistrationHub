@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>MPAC Membership Registration</title>
+  <title>Mpolonjeni Alliance | Registration Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
@@ -20,15 +20,21 @@
       --radius: 28px;
     }
     body { font-family: 'Inter', sans-serif; background: var(--bg-light); color: var(--text-dark); padding: 20px; }
-    .container { max-width: 1200px; margin: 0 auto; }
-    .premium-header { background: linear-gradient(135deg, var(--primary-dark), #001166); border-radius: var(--radius); padding: 16px 28px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; box-shadow: var(--shadow); color: white; }
+    .container { max-width: 1300px; margin: 0 auto; }
+    .premium-header { background: linear-gradient(135deg, var(--primary-dark), #001166); border-radius: var(--radius); padding: 18px 28px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; box-shadow: var(--shadow); color: white; }
     .logo-section { display: flex; align-items: center; gap: 16px; }
     .logo-badge { width: 54px; height: 54px; background: linear-gradient(135deg, var(--amber), var(--primary)); border-radius: 50%; display: flex; align-items: center; justify-content: center; overflow: hidden; box-shadow: 0 0 0 2px rgba(255,160,0,0.5); }
     .logo-badge img { width: 100%; height: 100%; object-fit: cover; }
-    .header-text h1 { font-size: 1.5rem; font-weight: 800; }
-    .sync-status { font-size: 0.7rem; background: rgba(0,0,0,0.4); padding: 2px 10px; border-radius: 40px; }
-    .sync-status.offline { background: #C2185B; }
-    .glass-card { background: var(--card-bg); border-radius: 32px; border: 1px solid rgba(0,0,0,0.06); margin-bottom: 24px; overflow: hidden; box-shadow: var(--shadow); }
+    .header-text h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.3px; }
+    .portal-sub { font-size: 0.8rem; opacity: 0.9; margin-top: 4px; color: #FFE0A3; }
+    .sync-status { font-size: 0.7rem; background: rgba(0,0,0,0.4); padding: 4px 12px; border-radius: 40px; }
+    .portal-tabs { display: flex; gap: 12px; margin-bottom: 28px; background: var(--card-bg); border-radius: 60px; padding: 6px 12px; border: 1px solid rgba(0,0,0,0.06); width: fit-content; }
+    .tab-btn { background: transparent; border: none; padding: 10px 28px; border-radius: 50px; font-weight: 700; font-size: 1rem; color: #1e293b; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 8px; }
+    .tab-btn i { font-size: 1.1rem; }
+    .tab-btn.active { background: linear-gradient(105deg, var(--primary), var(--primary-dark)); color: white; box-shadow: var(--shadow); }
+    .tab-pane { display: none; animation: fadeIn 0.25s ease; }
+    .tab-pane.active { display: block; }
+    .glass-card { background: var(--card-bg); border-radius: 32px; border: 1px solid rgba(0,0,0,0.06); margin-bottom: 30px; overflow: hidden; box-shadow: var(--shadow); }
     .card-header { padding: 16px 24px; background: rgba(0,0,0,0.02); border-bottom: 2px solid var(--amber); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; }
     .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 24px; padding: 28px; }
     .form-section { background: #f8fafc; border-radius: 24px; padding: 20px; border-left: 4px solid var(--primary); }
@@ -36,239 +42,203 @@
     .input-group label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--primary); margin-bottom: 6px; }
     .input-group input, .input-group select, .input-group textarea { width: 100%; padding: 10px 14px; background: white; border: 1px solid #e2e8f0; border-radius: 18px; font-family: inherit; }
     .radio-group { display: flex; gap: 24px; align-items: center; margin-top: 6px; flex-wrap: wrap; }
-    .phone-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 8px; }
-    .contact-details-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin: 8px 0 12px 0;
-      padding-bottom: 6px;
-      border-bottom: 2px dashed rgba(0,51,204,0.2);
-    }
-    .contact-details-header h5 {
-      font-size: 0.9rem;
-      font-weight: 800;
-      color: var(--primary);
-      letter-spacing: -0.2px;
-      margin: 0;
-    }
-    .contact-details-header i {
-      color: var(--pink);
-      font-size: 1rem;
-    }
-    .required-hint {
-      font-size: 0.65rem;
-      background: rgba(194,24,91,0.1);
-      padding: 2px 8px;
-      border-radius: 40px;
-      color: var(--pink);
-      font-weight: 500;
-      margin-left: 8px;
-    }
-    .photo-preview { width: 100px; height: 100px; object-fit: cover; border-radius: 12px; margin-top: 8px; border: 2px solid var(--primary); }
+    .phone-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+    .contact-header { margin: 1rem 0 0.5rem 0; font-weight: 700; color: var(--primary-dark); font-size: 0.9rem; border-left: 3px solid var(--amber); padding-left: 10px; }
+    .photo-preview { width: 100px; height: 100px; object-fit: cover; border-radius: 12px; margin-top: 8px; border: 2px solid var(--primary); background: #f0f0f0; }
     .btn-gold { background: linear-gradient(95deg, var(--primary), var(--primary-dark)); border: none; padding: 14px; border-radius: 60px; font-weight: 800; color: white; cursor: pointer; width: 100%; transition: 0.2s; }
     .btn-gold:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-outline { background: rgba(0,51,204,0.08); border: 1px solid var(--pink); padding: 8px 18px; border-radius: 60px; cursor: pointer; font-weight: 600; transition: 0.2s; }
+    .btn-outline { background: rgba(0,51,204,0.08); border: 1px solid var(--pink); padding: 8px 20px; border-radius: 60px; cursor: pointer; font-weight: 600; transition: 0.2s; }
     .btn-outline:hover { background: var(--pink); color: white; border-color: var(--pink); }
-    .checkbox-label { display: flex; align-items: center; gap: 12px; margin: 16px 0 12px; }
-    .inline-note { font-size: 0.7rem; color: #64748b; margin-top: 8px; }
+    .inline-note { font-size: 0.7rem; color: #64748b; margin-top: 6px; }
     .toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary-dark); color: white; padding: 10px 20px; border-radius: 40px; display: none; z-index: 2100; font-weight: bold; box-shadow: var(--shadow); }
-    .children-names-container { margin-top: 8px; }
-    .child-name-input { margin-bottom: 8px; }
-    .child-name-input input { width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 16px; }
-    @media (max-width: 800px) { .phone-row { grid-template-columns: 1fr; } .form-grid { padding: 16px; } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 800px) { .phone-row { grid-template-columns: 1fr; } .form-grid { padding: 16px; } .tab-btn { padding: 6px 16px; font-size: 0.85rem; } }
   </style>
 </head>
 <body>
 <div class="container">
+  <!-- HEADER -->
   <div class="premium-header">
     <div class="logo-section">
-      <div class="logo-badge"><img src="https://i.imgur.com/kTumLOY.jpg" alt="MPAC Logo" onerror="this.src='https://via.placeholder.com/54?text=MPAC'"></div>
+      <div class="logo-badge"><img src="https://i.imgur.com/kTumLOY.jpg" alt="Mpolonjeni Logo" onerror="this.src='https://via.placeholder.com/54?text=MAC'"></div>
       <div class="header-text">
-        <h1>MPAC Membership Hub</h1>
+        <h1>Mpolonjeni Alliance Registration Portal</h1>
+        <div class="portal-sub"><i class="fas fa-hands-helping"></i> The Difference we Need</div>
       </div>
     </div>
-    <div style="display: flex; gap: 15px; align-items: center;">
-      <div class="sync-status" id="syncStatus"><i class="fas fa-circle"></i> Live</div>
+    <div class="sync-status" id="syncStatusChurch"><i class="fas fa-circle"></i> Church DB Live</div>
+  </div>
+
+  <!-- TAB NAVIGATION -->
+  <div class="portal-tabs">
+    <button class="tab-btn active" data-tab="churchTab"><i class="fas fa-church"></i> Church Membership</button>
+    <button class="tab-btn" data-tab="childrenTab"><i class="fas fa-child"></i> Children's Ministry</button>
+  </div>
+
+  <!-- ======================== CHURCH MEMBERSHIP PORTAL (GENDER ADDED) ======================== -->
+  <div id="churchTab" class="tab-pane active">
+    <div class="glass-card">
+      <div class="card-header"><h3><i class="fas fa-pen-ruler"></i> Church Member Registration Form</h3><button class="btn-outline" id="resetChurchForm"><i class="fas fa-undo-alt"></i> Clear Form</button></div>
+      <form id="churchMemberForm">
+        <div class="form-grid">
+          <div class="form-section">
+            <h4><i class="fas fa-user-circle" style="color:var(--primary);"></i> Personal Information</h4>
+            <div class="input-group"><label>Full Name & Surname *</label><input type="text" id="fullName" required></div>
+            <div class="input-group"><label>Date of Birth *</label><input type="date" id="dob" required></div>
+            <div class="input-group"><label>Marital Status</label><select id="maritalStatus"><option>Married</option><option>Single</option><option>Widowed</option><option>Separated</option></select></div>
+            <!-- GENDER FIELD: positioned right after Marital Status as required -->
+            <div class="input-group"><label>Gender *</label><select id="gender" required><option value="">Select gender</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
+            <div class="input-group"><label>Place of Birth</label><input type="text" id="placeOfBirth"></div>
+            <div class="input-group"><label>ID Number *</label><input type="text" id="idNumber" required></div>
+            <div class="input-group"><label>Postal Address</label><input type="text" id="postalAddress"></div>
+            <div class="input-group"><label>Physical Address</label><input type="text" id="physicalAddress"></div>
+            
+            <div class="contact-header"><i class="fas fa-phone-alt" style="margin-right: 8px; color: var(--amber);"></i> Contact Details</div>
+            <div class="phone-row">
+              <div class="input-group"><label>Home</label><input type="tel" id="phoneHome"></div>
+              <div class="input-group"><label>Work</label><input type="tel" id="phoneWork"></div>
+              <div class="input-group"><label>Cell *</label><input type="tel" id="phoneCell" required></div>
+            </div>
+            
+            <div class="input-group"><label>Email *</label><input type="email" id="email" required></div>
+            <div class="input-group"><label>Next of Kin</label><input type="text" id="nextOfKin"></div>
+            <div class="input-group"><label>Children count</label><input type="number" id="childrenCount" min="0" value="0"></div>
+            <div id="childrenNamesContainer" class="children-names-container"></div>
+            <div class="input-group"><label><i class="fas fa-camera"></i> Member Photo (Optional)</label><input type="file" id="photoUpload" accept="image/jpeg,image/png,image/jpg"><div id="photoPreviewContainer"></div><small class="inline-note">Max 5MB. Base64 stored.</small></div>
+          </div>
+          <div class="form-section">
+            <h4><i class="fas fa-church" style="color:var(--pink);"></i> Spiritual Information</h4>
+            <div class="input-group"><label>Member of any Christian denomination?</label><div class="radio-group"><label><input type="radio" name="denomMember" value="yes"> Yes</label><label><input type="radio" name="denomMember" value="no" checked> No</label></div></div>
+            <div id="associateChurchGroup" style="display:none;"><div class="input-group"><label>Associate Church/Ministry</label><input type="text" id="associateChurchName"></div></div>
+            <div id="pastorGroup" style="display:none;"><div class="input-group"><label>Pastor’s details</label><textarea id="pastorDetails" rows="2"></textarea></div></div>
+            <div class="input-group"><label>Born again?</label><div class="radio-group"><label><input type="radio" name="bornAgain" value="yes"> Yes</label><label><input type="radio" name="bornAgain" value="no" checked> No</label></div></div>
+            <div id="bornAgainYearGroup" style="display:none;"><div class="input-group"><label>Year born again</label><input type="text" id="bornAgainYear"></div></div>
+            <div class="input-group"><label>What would you like to do in Church?</label><input type="text" id="churchDesire"></div>
+            <div class="input-group"><label>Current involvement</label><textarea id="churchInvolvement" rows="2"></textarea></div>
+            <div class="input-group"><label>Water baptism?</label><div class="radio-group"><label><input type="radio" name="baptised" value="yes"> Yes</label><label><input type="radio" name="baptised" value="no"> No</label></div></div>
+          </div>
+          <div class="form-section">
+            <h4><i class="fas fa-file-signature" style="color:var(--amber);"></i> Declaration & Commitment</h4>
+            <div class="input-group"><label>I, (full name) declare truth *</label><input type="text" id="declarationName" required></div>
+            <div class="input-group"><label>Declaration Date</label><input type="date" id="declarationDate" required></div>
+            <div class="checkbox-label"><input type="checkbox" id="commitmentCheckbox"> <label>I submit to MPAC leadership & activities.</label></div>
+            <div class="inline-note"><i class="fas fa-info-circle"></i> By submitting, you confirm all details.</div>
+          </div>
+        </div>
+        <div style="padding:0 28px 28px"><button type="submit" class="btn-gold" id="submitChurchBtn"><i class="fas fa-save"></i> Register Church Member</button>
+        <div style="margin-top:12px"><button type="button" id="cancelChurchEdit" class="btn-outline" style="display:none;"><i class="fas fa-times"></i> Cancel Edit</button></div></div>
+      </form>
     </div>
   </div>
 
-  <!-- REGISTRATION FORM -->
-  <div class="glass-card">
-    <div class="card-header"><h3><i class="fas fa-pen-ruler"></i> Member Registration Form</h3><button class="btn-outline" id="resetFormBtn"><i class="fas fa-undo-alt"></i> Clear Form</button></div>
-    <form id="memberForm">
-      <div class="form-grid">
-        <div class="form-section">
-          <h4><i class="fas fa-user-circle" style="color:var(--primary);"></i> Personal Information</h4>
-          <div class="input-group"><label>Full Name & Surname *</label><input type="text" id="fullName" required></div>
-          <div class="input-group"><label>Date of Birth *</label><input type="date" id="dob" required></div>
-          <div class="input-group"><label>Marital Status</label><select id="maritalStatus"><option>Married</option><option>Single</option><option>Widowed</option><option>Separated</option></select></div>
-          <div class="input-group"><label>Place of Birth</label><input type="text" id="placeOfBirth"></div>
-          <div class="input-group"><label>ID Number *</label><input type="text" id="idNumber" required></div>
-          <div class="input-group"><label>Postal Address</label><input type="text" id="postalAddress"></div>
-          <div class="input-group"><label>Physical Address</label><input type="text" id="physicalAddress"></div>
-          
-          <!-- CONTACT DETAILS HEADER for Home, Work, Cell -->
-          <div class="contact-details-header">
-            <i class="fas fa-address-card"></i>
-            <h5>Contact Details <span style="font-weight:400;">(Home · Work · Cell*)</span></h5>
-            <span class="required-hint"><i class="fas fa-asterisk" style="font-size: 8px;"></i> Cell required</span>
+  <!-- ======================== CHILDREN'S MINISTRY REGISTRATION ======================== -->
+  <div id="childrenTab" class="tab-pane">
+    <div class="glass-card">
+      <div class="card-header"><h3><i class="fas fa-children"></i> Children's Ministry Registration</h3><button class="btn-outline" id="resetChildFormBtn"><i class="fas fa-undo-alt"></i> Clear Form</button></div>
+      <form id="childRegistrationForm">
+        <div class="form-grid">
+          <div class="form-section">
+            <h4><i class="fas fa-user-graduate"></i> Child Information</h4>
+            <div class="input-group"><label>Full Name *</label><input type="text" id="childFullName" required></div>
+            <div class="input-group"><label>Date of Birth *</label><input type="date" id="childDob" required></div>
+            <div class="input-group"><label>Gender *</label><select id="childGender" required><option value="">Select</option><option>Male</option><option>Female</option></select></div>
+            <div class="input-group"><label>Area of Residence *</label><input type="text" id="childResidence" required></div>
+            <div class="input-group"><label><i class="fas fa-camera"></i> Child Photo (Optional)</label><input type="file" id="childPhotoUpload" accept="image/jpeg,image/png,image/jpg"><div id="childPhotoPreviewContainer"></div><small class="inline-note">Max 5MB. Base64 stored.</small></div>
           </div>
-          
-          <div class="phone-row">
-            <div class="input-group"><label>Home</label><input type="tel" id="phoneHome" placeholder="e.g., 011 123 4567"></div>
-            <div class="input-group"><label>Work</label><input type="tel" id="phoneWork" placeholder="e.g., 010 987 6543"></div>
-            <div class="input-group"><label>Cell *</label><input type="tel" id="phoneCell" required placeholder="071 234 5678"></div>
+          <div class="form-section">
+            <h4><i class="fas fa-hands-helping"></i> Guardianship Details</h4>
+            <div class="input-group"><label>Primary Guardian Full Name *</label><input type="text" id="primaryGuardian" required></div>
+            <div class="input-group"><label>Relationship to Child *</label>
+              <select id="guardianRelation" required>
+                <option value="">Select relationship</option>
+                <option>Biological parent</option>
+                <option>Grandparent</option>
+                <option>Siblings</option>
+                <option>Other relative</option>
+                <option>Legal guardian</option>
+              </select>
+            </div>
           </div>
-          
-          <div class="input-group"><label>Email *</label><input type="email" id="email" required></div>
-          <div class="input-group"><label>Next of Kin</label><input type="text" id="nextOfKin"></div>
-          <div class="input-group"><label>Children count</label><input type="number" id="childrenCount" min="0" value="0"></div>
-          <div id="childrenNamesContainer" class="children-names-container"></div>
-          <div class="input-group">
-            <label><i class="fas fa-camera"></i> Member Photo</label>
-            <input type="file" id="photoUpload" accept="image/jpeg,image/png,image/jpg">
-            <div id="photoPreviewContainer"></div>
-            <small class="inline-note">Max 5MB. JPG or PNG. Photo will be stored as Base64 in the sheet.</small>
+          <div class="form-section">
+            <h4><i class="fas fa-school"></i> School & Grade</h4>
+            <div class="input-group">
+              <label>School Name <span style="font-weight: normal; text-transform: none;">(optional - leave blank if not applicable)</span></label>
+              <input type="text" id="schoolName" placeholder="e.g., Mpolonjeni Primary">
+              <small class="inline-note">If you provide a school name, you will be asked to select the child's grade.</small>
+            </div>
+            <div class="input-group" id="gradeGroup" style="display:none;">
+              <label>Current Grade *</label>
+              <select id="childGrade">
+                <option value="">Select grade</option>
+                <option>Grade 0</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
+                <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option>
+                <option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option>
+                <option>Grade 12</option>
+              </select>
+            </div>
+            <div class="inline-note"><i class="fas fa-heart"></i> We value every child's spiritual growth</div>
           </div>
         </div>
-        <div class="form-section">
-          <h4><i class="fas fa-church" style="color:var(--pink);"></i> Spiritual Information</h4>
-          <div class="input-group"><label>Member of any Christian denomination?</label><div class="radio-group"><label><input type="radio" name="denomMember" value="yes"> Yes</label><label><input type="radio" name="denomMember" value="no" checked> No</label></div></div>
-          <div id="associateChurchGroup" style="display:none;"><div class="input-group"><label>Associate Church/Ministry</label><input type="text" id="associateChurchName"></div></div>
-          <div id="pastorGroup" style="display:none;"><div class="input-group"><label>Pastor’s details</label><textarea id="pastorDetails" rows="2"></textarea></div></div>
-          <div class="input-group"><label>Born again?</label><div class="radio-group"><label><input type="radio" name="bornAgain" value="yes"> Yes</label><label><input type="radio" name="bornAgain" value="no" checked> No</label></div></div>
-          <div id="bornAgainYearGroup" style="display:none;"><div class="input-group"><label>Year born again</label><input type="text" id="bornAgainYear"></div></div>
-          <div class="input-group"><label>What would you like to do in Church?</label><input type="text" id="churchDesire"></div>
-          <div class="input-group"><label>Current involvement</label><textarea id="churchInvolvement" rows="2"></textarea></div>
-          <div class="input-group"><label>Water baptism?</label><div class="radio-group"><label><input type="radio" name="baptised" value="yes"> Yes</label><label><input type="radio" name="baptised" value="no"> No</label></div></div>
-        </div>
-        <div class="form-section">
-          <h4><i class="fas fa-file-signature" style="color:var(--amber);"></i> Declaration & Commitment</h4>
-          <div class="input-group"><label>I, (full name) declare truth *</label><input type="text" id="declarationName" required></div>
-          <div class="input-group"><label>Declaration Date</label><input type="date" id="declarationDate" required></div>
-          <div class="checkbox-label"><input type="checkbox" id="commitmentCheckbox"> <label>I submit to MPAC leadership & activities.</label></div>
-          <div class="inline-note"><i class="fas fa-info-circle"></i> By submitting, you confirm all details are truthful.</div>
-        </div>
-      </div>
-      <div style="padding:0 28px 28px">
-        <button type="submit" class="btn-gold" id="submitBtn"><i class="fas fa-save"></i> Register Member</button>
-        <div style="margin-top:12px"><button type="button" id="cancelEditBtn" class="btn-outline" style="display:none;"><i class="fas fa-times"></i> Cancel Edit</button></div>
-      </div>
-    </form>
+        <div style="padding:0 28px 28px"><button type="submit" class="btn-gold" id="submitChildBtn"><i class="fas fa-save"></i> Register Child</button></div>
+      </form>
+    </div>
   </div>
 </div>
 <div id="toast" class="toast"></div>
 
 <script>
-  // ========== CONFIGURATION ==========
-  const API_BASE = "https://script.google.com/macros/s/AKfycbw-iBbVUwSI3pEncHBB0lE4yGsSeE3h4c-PZ0yh7eNMDHkxnwvxulf8a194DJlmcGVZ/exec";
-  // ===================================
+  // -------------------- CONFIGURATION --------------------
+  const API_BASE = "https://script.google.com/macros/s/AKfycbxjYggZ5BFK3mnqLRPUY95lGZEibx3UhhtsGzUh1Um10grWcCMfnBJC36rAHtyVwKSb/exec";
+  // -------------------------------------------------------
 
-  let members = [];
-  let editId = null;
-  let isSaving = false;
-  let currentPhotoBase64 = null;   // stores base64 of newly selected photo
+  // ========== CHURCH MEMBERS LOGIC (gender integrated fully) ==========
+  let churchMembers = [];
+  let editChurchId = null;
+  let currentPhotoBase64 = null;
+  let isSavingChurch = false;
 
-  // Helper: show toast message
-  function showToast(msg, isErr = false) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.style.display = 'block';
-    toast.style.background = isErr ? '#C2185B' : 'var(--primary-dark)';
-    setTimeout(() => toast.style.display = 'none', 3000);
-  }
-
-  function setSyncStatus(online) {
-    const statusDiv = document.getElementById('syncStatus');
-    if (online) {
-      statusDiv.innerHTML = '<i class="fas fa-circle"></i> Live';
-      statusDiv.style.background = 'rgba(0,0,0,0.4)';
-    } else {
-      statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Offline (local)';
-      statusDiv.style.background = '#C2185B';
-    }
-  }
-
-  // Fetch all members from backend
-  async function fetchMembers() {
+  function showToast(msg, isErr = false) { const t = document.getElementById('toast'); t.textContent = msg; t.style.display = 'block'; t.style.background = isErr ? '#C2185B' : '#0033CC'; setTimeout(() => t.style.display = 'none', 3000); }
+  
+  async function fetchChurchMembers() {
     try {
-      setSyncStatus(true);
       const res = await fetch(`${API_BASE}?action=list&_=${Date.now()}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      if (!res.ok) throw new Error();
       const json = await res.json();
-      if (json.status === 'success') {
-        members = json.data || [];
-        localStorage.setItem('mpac_members_backup', JSON.stringify(members));
-        setSyncStatus(true);
-      } else {
-        throw new Error(json.error || 'Unknown error');
-      }
+      if (json.status === 'success' && Array.isArray(json.data)) {
+        churchMembers = json.data.map(m => ({ ...m, registrationDate: m.registrationDate || new Date().toISOString() }));
+        localStorage.setItem('mpac_church_backup', JSON.stringify(churchMembers));
+        document.getElementById('syncStatusChurch').innerHTML = '<i class="fas fa-circle"></i> Church DB Live';
+      } else throw new Error();
     } catch (err) {
-      console.warn('API fetch failed, loading from localStorage', err);
-      setSyncStatus(false);
-      const backup = localStorage.getItem('mpac_members_backup');
-      members = backup ? JSON.parse(backup) : [];
-      if (members.length) showToast('Using offline cache - sync will resume when online', true);
-      else showToast('Unable to connect to server. Check script deployment.', true);
+      document.getElementById('syncStatusChurch').innerHTML = '<i class="fas fa-exclamation-triangle"></i> Offline (cache)';
+      const backup = localStorage.getItem('mpac_church_backup');
+      churchMembers = backup ? JSON.parse(backup) : [];
     }
   }
-
-  // Add member (POST with no-cors)
-  async function addMember(data) {
-    try {
-      console.log('Sending add request, photoBase64 present?', !!data.photoBase64);
-      await fetch(API_BASE, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({ action: 'add', ...data }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      return true;
-    } catch (err) {
-      console.warn('Add member error:', err);
-      return false;
-    }
-  }
-
-  // Update member
-  async function updateMember(id, data) {
-    try {
-      console.log('Sending update request, photoBase64 present?', !!data.photoBase64);
-      await fetch(API_BASE, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: JSON.stringify({ action: 'update', id, ...data }),
-        headers: { 'Content-Type': 'application/json' }
-      });
-      return true;
-    } catch (err) {
-      console.warn('Update member error:', err);
-      return false;
-    }
-  }
-
-  // Delete member
-  async function deleteMember(id) {
-    if (!confirm('⚠️ Permanently delete this member?')) return;
-    try {
-      await fetch(`${API_BASE}?action=delete&id=${id}`, { mode: 'no-cors' });
-      await fetchMembers();
-      showToast('Member deleted');
-      if (editId === id) cancelEdit();
-    } catch (err) {
-      showToast('Error deleting', true);
-    }
-  }
-
-  // Populate form for editing
-  function editMember(id) {
-    const m = members.find(x => x.id === id);
+  
+  async function addChurchMember(data) { try { await fetch(API_BASE, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'add', ...data }), headers: { 'Content-Type': 'application/json' } }); return true; } catch(e) { return false; } }
+  async function updateChurchMember(id, data) { try { await fetch(API_BASE, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'update', id, ...data }), headers: { 'Content-Type': 'application/json' } }); return true; } catch(e) { return false; } }
+  async function deleteChurchMemberRemote(id) { try { await fetch(`${API_BASE}?action=delete&id=${id}`, { mode: 'no-cors' }); return true; } catch(e) { return false; } }
+  
+  window.deleteChurchMember = async function(id) {
+    if (!confirm('Permanently delete church member?')) return;
+    await deleteChurchMemberRemote(id);
+    churchMembers = churchMembers.filter(m => m.id !== id);
+    localStorage.setItem('mpac_church_backup', JSON.stringify(churchMembers));
+    await fetchChurchMembers();
+    showToast('Church member deleted');
+    if (editChurchId === id) cancelChurchEdit();
+  };
+  
+  window.editChurchMember = function(id) {
+    const m = churchMembers.find(x => x.id === id);
     if (!m) return;
-    editId = id;
+    editChurchId = id;
     document.getElementById('fullName').value = m.fullName || '';
     document.getElementById('dob').value = m.dob || '';
     document.getElementById('maritalStatus').value = m.maritalStatus || 'Married';
+    // GENDER: set value from stored data (default blank if missing)
+    document.getElementById('gender').value = m.gender || '';
     document.getElementById('placeOfBirth').value = m.placeOfBirth || '';
     document.getElementById('idNumber').value = m.idNumber || '';
     document.getElementById('postalAddress').value = m.postalAddress || '';
@@ -278,17 +248,16 @@
     document.getElementById('phoneCell').value = m.phoneCell || '';
     document.getElementById('email').value = m.email || '';
     document.getElementById('nextOfKin').value = m.nextOfKin || '';
-    const childrenCount = parseInt(m.childrenCount) || 0;
-    document.getElementById('childrenCount').value = childrenCount;
-    generateChildrenNameFields(childrenCount, m.childrenNames);
+    document.getElementById('childrenCount').value = m.childrenCount || 0;
+    generateChildrenFields(parseInt(m.childrenCount) || 0, m.childrenNames);
     if (m.memberOfDenomination === 'yes') document.querySelector('input[name="denomMember"][value="yes"]').checked = true;
     else document.querySelector('input[name="denomMember"][value="no"]').checked = true;
-    toggleDenominationFields();
+    toggleDenomFields();
     document.getElementById('associateChurchName').value = m.associateChurchName || '';
     document.getElementById('pastorDetails').value = m.pastorDetails || '';
     if (m.isBornAgain === 'yes') document.querySelector('input[name="bornAgain"][value="yes"]').checked = true;
     else document.querySelector('input[name="bornAgain"][value="no"]').checked = true;
-    toggleBornAgainYear();
+    toggleBornAgain();
     document.getElementById('bornAgainYear').value = m.bornAgainYear || '';
     document.getElementById('churchDesire').value = m.churchDesire || '';
     document.getElementById('churchInvolvement').value = m.churchInvolvement || '';
@@ -297,182 +266,196 @@
     document.getElementById('declarationName').value = m.declarationName || '';
     document.getElementById('declarationDate').value = m.declarationDate || '';
     document.getElementById('commitmentCheckbox').checked = m.commitmentAgreed === true;
-    // existing photo (Base64)
-    if (m.photoBase64) {
-      document.getElementById('photoPreviewContainer').innerHTML = `<img src="data:image/jpeg;base64,${m.photoBase64}" class="photo-preview" alt="Current Photo"><br><small>Existing photo</small>`;
-      currentPhotoBase64 = null; // don't overwrite unless new photo chosen
-    } else {
-      document.getElementById('photoPreviewContainer').innerHTML = '';
-    }
-    document.getElementById('submitBtn').innerHTML = '<i class="fas fa-edit"></i> Update Member';
-    document.getElementById('cancelEditBtn').style.display = 'inline-block';
-    showToast('✏️ Editing mode – you can replace the photo');
-  }
-
-  function cancelEdit() {
-    editId = null;
-    resetForm();
-    document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save"></i> Register Member';
-    document.getElementById('cancelEditBtn').style.display = 'none';
-    currentPhotoBase64 = null;
-    document.getElementById('photoUpload').value = '';
+    if (m.photoBase64) document.getElementById('photoPreviewContainer').innerHTML = `<img src="data:image/jpeg;base64,${m.photoBase64}" class="photo-preview">`;
+    else document.getElementById('photoPreviewContainer').innerHTML = '';
+    document.getElementById('submitChurchBtn').innerHTML = '<i class="fas fa-edit"></i> Update Member';
+    document.getElementById('cancelChurchEdit').style.display = 'inline-block';
+  };
+  
+  function cancelChurchEdit() { editChurchId = null; resetChurchForm(); document.getElementById('submitChurchBtn').innerHTML = '<i class="fas fa-save"></i> Register Church Member'; document.getElementById('cancelChurchEdit').style.display = 'none'; currentPhotoBase64 = null; }
+  
+  function resetChurchForm() { 
+    document.getElementById('churchMemberForm').reset(); 
+    document.getElementById('declarationDate').valueAsDate = new Date(); 
+    document.getElementById('childrenCount').value = 0; 
+    generateChildrenFields(0, ''); 
+    document.querySelector('input[name="denomMember"][value="no"]').checked = true; 
+    toggleDenomFields(); 
+    document.querySelector('input[name="bornAgain"][value="no"]').checked = true; 
+    toggleBornAgain(); 
+    currentPhotoBase64 = null; 
+    document.getElementById('photoUpload').value = ''; 
     document.getElementById('photoPreviewContainer').innerHTML = '';
+    // Reset gender field to empty placeholder
+    const genderSelect = document.getElementById('gender');
+    if (genderSelect) genderSelect.value = '';
   }
-
-  function resetForm() {
-    document.getElementById('memberForm').reset();
-    document.getElementById('declarationDate').valueAsDate = new Date();
-    document.getElementById('childrenCount').value = 0;
-    generateChildrenNameFields(0, '');
-    document.querySelector('input[name="denomMember"][value="no"]').checked = true;
-    toggleDenominationFields();
-    document.querySelector('input[name="bornAgain"][value="no"]').checked = true;
-    toggleBornAgainYear();
-    currentPhotoBase64 = null;
-    document.getElementById('photoUpload').value = '';
-    document.getElementById('photoPreviewContainer').innerHTML = '';
-  }
-
-  // Generate dynamic input fields for children names
-  function generateChildrenNameFields(count, existingNamesStr = '') {
-    const container = document.getElementById('childrenNamesContainer');
-    container.innerHTML = '';
-    if (count <= 0) return;
-    const existingNames = existingNamesStr ? existingNamesStr.split(',').map(s => s.trim()) : [];
-    for (let i = 1; i <= count; i++) {
-      const div = document.createElement('div');
-      div.className = 'child-name-input';
-      const label = document.createElement('label');
-      label.textContent = `Child ${i} Name`;
-      label.style.fontSize = '0.7rem';
-      label.style.fontWeight = '700';
-      label.style.color = 'var(--primary)';
-      label.style.textTransform = 'uppercase';
-      label.style.display = 'block';
-      label.style.marginBottom = '4px';
-      const input = document.createElement('input');
-      input.type = 'text';
-      input.placeholder = `Full name of child ${i}`;
-      input.className = 'form-control';
-      input.style.width = '100%';
-      input.style.padding = '8px 12px';
-      input.style.border = '1px solid #e2e8f0';
-      input.style.borderRadius = '16px';
-      if (existingNames[i-1]) input.value = existingNames[i-1];
-      div.appendChild(label);
-      div.appendChild(input);
-      container.appendChild(div);
-    }
-  }
-
-  // Collect children names as comma‑separated string
-  function getChildrenNames() {
-    const container = document.getElementById('childrenNamesContainer');
-    const inputs = container.querySelectorAll('input');
-    const names = [];
-    inputs.forEach(input => {
-      if (input.value.trim()) names.push(input.value.trim());
-    });
-    return names.join(',');
-  }
-
-  // Gather all form data including photoBase64 if a new photo was selected
-  function getFormData() {
-    const isDenom = document.querySelector('input[name="denomMember"]:checked').value === 'yes';
-    const data = {
-      fullName: document.getElementById('fullName').value.trim(),
-      dob: document.getElementById('dob').value,
+  
+  function generateChildrenFields(count, existingNamesStr='') { const container = document.getElementById('childrenNamesContainer'); container.innerHTML = ''; if (count <= 0) return; const names = existingNamesStr ? existingNamesStr.split(',') : []; for(let i=1;i<=count;i++){ const div = document.createElement('div'); div.className = 'child-name-input'; div.innerHTML = `<label style="font-size:0.7rem;font-weight:700;">Child ${i} Name</label><input type="text" placeholder="Full name" value="${names[i-1]||''}" style="width:100%;padding:8px;border-radius:16px;">`; container.appendChild(div); } }
+  
+  function getChildrenNames() { const inputs = document.querySelectorAll('#childrenNamesContainer input'); return Array.from(inputs).map(i=>i.value.trim()).filter(v=>v).join(','); }
+  
+  function toggleDenomFields() { const isYes = document.querySelector('input[name="denomMember"]:checked').value === 'yes'; document.getElementById('associateChurchGroup').style.display = isYes ? 'block' : 'none'; document.getElementById('pastorGroup').style.display = isYes ? 'block' : 'none'; }
+  
+  function toggleBornAgain() { const isBorn = document.querySelector('input[name="bornAgain"]:checked').value === 'yes'; document.getElementById('bornAgainYearGroup').style.display = isBorn ? 'block' : 'none'; }
+  
+  function getChurchFormData() { 
+    const isDenom = document.querySelector('input[name="denomMember"]:checked').value === 'yes'; 
+    return { 
+      fullName: document.getElementById('fullName').value.trim(), 
+      dob: document.getElementById('dob').value, 
       maritalStatus: document.getElementById('maritalStatus').value,
-      placeOfBirth: document.getElementById('placeOfBirth').value,
-      idNumber: document.getElementById('idNumber').value.trim(),
-      postalAddress: document.getElementById('postalAddress').value,
-      physicalAddress: document.getElementById('physicalAddress').value,
-      phoneHome: document.getElementById('phoneHome').value,
-      phoneWork: document.getElementById('phoneWork').value,
-      phoneCell: document.getElementById('phoneCell').value.trim(),
-      email: document.getElementById('email').value.trim(),
-      nextOfKin: document.getElementById('nextOfKin').value,
-      childrenCount: parseInt(document.getElementById('childrenCount').value) || 0,
-      childrenNames: getChildrenNames(),
-      memberOfDenomination: isDenom ? 'yes' : 'no',
-      associateChurchName: isDenom ? document.getElementById('associateChurchName').value : '',
-      pastorDetails: isDenom ? document.getElementById('pastorDetails').value : '',
-      isBornAgain: document.querySelector('input[name="bornAgain"]:checked').value,
-      bornAgainYear: document.getElementById('bornAgainYear').value,
-      churchDesire: document.getElementById('churchDesire').value,
-      churchInvolvement: document.getElementById('churchInvolvement').value,
-      isBaptised: document.querySelector('input[name="baptised"]:checked')?.value || '',
-      declarationName: document.getElementById('declarationName').value.trim(),
-      declarationDate: document.getElementById('declarationDate').value,
-      commitmentAgreed: document.getElementById('commitmentCheckbox').checked
-    };
-    // Only include photoBase64 if a new photo was uploaded
-    if (currentPhotoBase64) {
-      data.photoBase64 = currentPhotoBase64;
-      console.log('✅ Adding photoBase64 to payload, length:', currentPhotoBase64.length);
-    }
-    return data;
+      gender: document.getElementById('gender').value,   // GENDER added
+      placeOfBirth: document.getElementById('placeOfBirth').value, 
+      idNumber: document.getElementById('idNumber').value.trim(), 
+      postalAddress: document.getElementById('postalAddress').value, 
+      physicalAddress: document.getElementById('physicalAddress').value, 
+      phoneHome: document.getElementById('phoneHome').value, 
+      phoneWork: document.getElementById('phoneWork').value, 
+      phoneCell: document.getElementById('phoneCell').value.trim(), 
+      email: document.getElementById('email').value.trim(), 
+      nextOfKin: document.getElementById('nextOfKin').value, 
+      childrenCount: parseInt(document.getElementById('childrenCount').value)||0, 
+      childrenNames: getChildrenNames(), 
+      memberOfDenomination: isDenom ? 'yes':'no', 
+      associateChurchName: isDenom ? document.getElementById('associateChurchName').value:'', 
+      pastorDetails: isDenom ? document.getElementById('pastorDetails').value:'', 
+      isBornAgain: document.querySelector('input[name="bornAgain"]:checked').value, 
+      bornAgainYear: document.getElementById('bornAgainYear').value, 
+      churchDesire: document.getElementById('churchDesire').value, 
+      churchInvolvement: document.getElementById('churchInvolvement').value, 
+      isBaptised: document.querySelector('input[name="baptised"]:checked')?.value||'', 
+      declarationName: document.getElementById('declarationName').value.trim(), 
+      declarationDate: document.getElementById('declarationDate').value, 
+      commitmentAgreed: document.getElementById('commitmentCheckbox').checked, 
+      registrationDate: new Date().toISOString(), 
+      photoBase64: currentPhotoBase64 || undefined 
+    }; 
   }
-
-  function validateFormData(data) {
-    if (!data.fullName) { showToast('Full name required', true); return false; }
-    if (!data.idNumber) { showToast('ID Number required', true); return false; }
-    if (!data.phoneCell) { showToast('Cell phone required', true); return false; }
-    if (!data.email || !data.email.includes('@')) { showToast('Valid email required', true); return false; }
-    if (!data.dob) { showToast('Date of Birth required', true); return false; }
-    if (!data.declarationName) { showToast('Declaration name required', true); return false; }
-    if (!data.commitmentAgreed) { showToast('Must agree to the declaration', true); return false; }
-    return true;
-  }
-
-  // Submit handler
-  document.getElementById('memberForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    if (isSaving) return;
-    const data = getFormData();
-    if (!validateFormData(data)) return;
-
-    const submitBtn = document.getElementById('submitBtn');
-    const originalText = submitBtn.innerHTML;
-    submitBtn.disabled = true;
-    submitBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Saving...';
-    isSaving = true;
-
-    try {
-      let success = false;
-      if (editId) success = await updateMember(editId, data);
-      else success = await addMember(data);
-      await fetchMembers();
-      showToast(editId ? 'Member updated!' : 'Member registered!');
-      if (editId) cancelEdit();
-      else resetForm();
-    } catch (err) {
-      console.error(err);
-      showToast('Network error. Please try again.', true);
-    } finally {
-      submitBtn.disabled = false;
-      submitBtn.innerHTML = originalText;
-      isSaving = false;
+  
+  document.getElementById('churchMemberForm').addEventListener('submit', async (e) => { 
+    e.preventDefault(); 
+    if(isSavingChurch) return; 
+    const data = getChurchFormData(); 
+    // validation including gender
+    if(!data.fullName || !data.idNumber || !data.phoneCell || !data.email.includes('@') || !data.dob || !data.declarationName || !data.commitmentAgreed) { 
+      showToast('Please fill required fields: Full Name, ID, Cell, valid Email, DOB, Declaration', true); 
+      return; 
     }
+    if(!data.gender) {
+      showToast('Please select Gender (Male or Female) before submitting', true);
+      return;
+    }
+    isSavingChurch=true; 
+    const btn=document.getElementById('submitChurchBtn'); 
+    const orig=btn.innerHTML; 
+    btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Saving...'; 
+    btn.disabled=true; 
+    try { 
+      if(editChurchId) await updateChurchMember(editChurchId, data); 
+      else await addChurchMember(data); 
+      await fetchChurchMembers(); 
+      showToast(editChurchId?'Member updated!':'Member registered!'); 
+      if(editChurchId) cancelChurchEdit(); 
+      else resetChurchForm(); 
+    } catch(err){ 
+      showToast('Network issue', true); 
+    } finally { 
+      btn.innerHTML=orig; 
+      btn.disabled=false; 
+      isSavingChurch=false; 
+    } 
   });
+  
+  document.getElementById('photoUpload').addEventListener('change', async function(e) { const file=e.target.files[0]; if(!file){ currentPhotoBase64=null; document.getElementById('photoPreviewContainer').innerHTML=''; return; } if(file.size>5*1024*1024){ showToast('Max 5MB', true); this.value=''; return; } const reader = new FileReader(); reader.onload = (ev) => { currentPhotoBase64 = ev.target.result.split(',')[1]; document.getElementById('photoPreviewContainer').innerHTML = `<img src="${ev.target.result}" class="photo-preview">`; }; reader.readAsDataURL(file); });
+  
+  document.getElementById('childrenCount').addEventListener('input', e => generateChildrenFields(parseInt(e.target.value)||0,''));
+  document.querySelectorAll('input[name="denomMember"]').forEach(r=>r.addEventListener('change',toggleDenomFields));
+  document.querySelectorAll('input[name="bornAgain"]').forEach(r=>r.addEventListener('change',toggleBornAgain));
+  document.getElementById('resetChurchForm').addEventListener('click',()=>cancelChurchEdit());
+  document.getElementById('cancelChurchEdit').addEventListener('click',cancelChurchEdit);
 
-  // Convert File to base64 (without the data:image/... prefix)
-  function fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result.split(',')[1]);
-      reader.onerror = error => reject(error);
-    });
+  // ========== CHILDREN MINISTRY - unchanged except gender existing ==========
+  let childrenArray = [];        
+  let editChildId = null;
+  let currentChildPhotoBase64 = null;
+  let isSavingChild = false;
+
+  async function fetchChildren() {
+    try {
+      const res = await fetch(`${API_BASE}?action=listChildren&_=${Date.now()}`);
+      if (!res.ok) throw new Error();
+      const json = await res.json();
+      if (json.status === 'success' && Array.isArray(json.data)) {
+        childrenArray = json.data;
+        localStorage.setItem('mpac_children_backup', JSON.stringify(childrenArray));
+        const statusSpan = document.getElementById('syncStatusChurch');
+        if (statusSpan) statusSpan.innerHTML = '<i class="fas fa-circle"></i> Children DB Live';
+      } else throw new Error();
+    } catch (err) {
+      console.warn("Offline mode for children");
+      const backup = localStorage.getItem('mpac_children_backup');
+      childrenArray = backup ? JSON.parse(backup) : [];
+      const statusSpan = document.getElementById('syncStatusChurch');
+      if (statusSpan) statusSpan.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Children Offline (cache)';
+    }
   }
 
-  // Handle photo selection
-  document.getElementById('photoUpload').addEventListener('change', async function(e) {
+  async function addChildToAPI(childData) {
+    try {
+      await fetch(API_BASE, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({ action: 'addChild', ...childData }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      return true;
+    } catch(e) { return false; }
+  }
+
+  async function updateChildAPI(id, childData) {
+    try {
+      await fetch(API_BASE, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: JSON.stringify({ action: 'updateChild', id, ...childData }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      return true;
+    } catch(e) { return false; }
+  }
+
+  async function deleteChildRemote(id) {
+    try {
+      await fetch(`${API_BASE}?action=deleteChild&id=${id}`, { mode: 'no-cors' });
+      return true;
+    } catch(e) { return false; }
+  }
+
+  function resetChildForm() {
+    document.getElementById('childRegistrationForm').reset();
+    document.getElementById('gradeGroup').style.display = 'none';
+    editChildId = null;
+    currentChildPhotoBase64 = null;
+    document.getElementById('childPhotoUpload').value = '';
+    document.getElementById('childPhotoPreviewContainer').innerHTML = '';
+    document.getElementById('submitChildBtn').innerHTML = '<i class="fas fa-save"></i> Register Child';
+  }
+
+  function toggleGradeField() {
+    const schoolVal = document.getElementById('schoolName').value.trim();
+    const gradeGroup = document.getElementById('gradeGroup');
+    gradeGroup.style.display = schoolVal !== '' ? 'block' : 'none';
+  }
+
+  document.getElementById('resetChildFormBtn').addEventListener('click', resetChildForm);
+  document.getElementById('schoolName').addEventListener('input', toggleGradeField);
+
+  document.getElementById('childPhotoUpload').addEventListener('change', function(e) {
     const file = e.target.files[0];
     if (!file) {
-      currentPhotoBase64 = null;
-      document.getElementById('photoPreviewContainer').innerHTML = '';
-      console.log('Photo cleared');
+      currentChildPhotoBase64 = null;
+      document.getElementById('childPhotoPreviewContainer').innerHTML = '';
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
@@ -480,57 +463,101 @@
       this.value = '';
       return;
     }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      currentChildPhotoBase64 = ev.target.result.split(',')[1];
+      document.getElementById('childPhotoPreviewContainer').innerHTML = `<img src="${ev.target.result}" class="photo-preview" alt="Child preview">`;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  document.getElementById('childRegistrationForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (isSavingChild) return;
+
+    const fullName = document.getElementById('childFullName').value.trim();
+    const dob = document.getElementById('childDob').value;
+    const gender = document.getElementById('childGender').value;
+    const residence = document.getElementById('childResidence').value.trim();
+    const primaryGuardian = document.getElementById('primaryGuardian').value.trim();
+    const relation = document.getElementById('guardianRelation').value;
+    const schoolName = document.getElementById('schoolName').value.trim();
+    let grade = '';
+    if (schoolName) grade = document.getElementById('childGrade').value;
+
+    if (!fullName || !dob || !gender || !residence || !primaryGuardian || !relation) {
+      showToast('Please fill all required fields (*)', true);
+      return;
+    }
+
+    const childData = {
+      fullName,
+      dob,
+      gender,
+      residence,
+      primaryGuardian,
+      relation,
+      schoolName: schoolName || '',
+      grade: grade || '',
+      registrationDate: new Date().toISOString(),
+      photoBase64: currentChildPhotoBase64 || null
+    };
+
+    isSavingChild = true;
+    const btn = document.getElementById('submitChildBtn');
+    const origText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Saving...';
+    btn.disabled = true;
+
     try {
-      const base64 = await fileToBase64(file);
-      currentPhotoBase64 = base64;
-      console.log('✅ Photo loaded, base64 length:', base64.length);
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        document.getElementById('photoPreviewContainer').innerHTML = `<img src="${ev.target.result}" class="photo-preview" alt="Preview">`;
-      };
-      reader.readAsDataURL(file);
+      let success = false;
+      if (editChildId) {
+        success = await updateChildAPI(editChildId, childData);
+        if (success) showToast('Child updated successfully!');
+      } else {
+        success = await addChildToAPI(childData);
+        if (success) showToast('Child registered successfully!');
+      }
+      if (success) {
+        await fetchChildren();
+        resetChildForm();
+      } else {
+        showToast('Error saving child. Check network.', true);
+      }
     } catch (err) {
-      console.error('Photo read error:', err);
-      showToast('Error reading photo', true);
+      showToast('Network error', true);
+    } finally {
+      btn.innerHTML = origText;
+      btn.disabled = false;
+      isSavingChild = false;
+      editChildId = null;
     }
   });
 
-  // Dynamic children name fields when children count changes
-  document.getElementById('childrenCount').addEventListener('input', function(e) {
-    let count = parseInt(e.target.value) || 0;
-    if (count < 0) count = 0;
-    generateChildrenNameFields(count, '');
+  // TAB SWITCHING
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const tabId = btn.getAttribute('data-tab');
+      document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (tabId === 'childrenTab') {
+        fetchChildren();
+      } else if (tabId === 'churchTab') {
+        fetchChurchMembers();
+      }
+    });
   });
 
-  // Conditional fields for denomination and born again
-  function toggleDenominationFields() {
-    const isMember = document.querySelector('input[name="denomMember"]:checked').value === 'yes';
-    document.getElementById('associateChurchGroup').style.display = isMember ? 'block' : 'none';
-    document.getElementById('pastorGroup').style.display = isMember ? 'block' : 'none';
-    if (!isMember) {
-      document.getElementById('pastorDetails').value = '';
-      document.getElementById('associateChurchName').value = '';
-    }
-  }
-  function toggleBornAgainYear() {
-    const isBorn = document.querySelector('input[name="bornAgain"]:checked').value === 'yes';
-    document.getElementById('bornAgainYearGroup').style.display = isBorn ? 'block' : 'none';
-    if (!isBorn) document.getElementById('bornAgainYear').value = '';
-  }
-
-  document.querySelectorAll('input[name="denomMember"]').forEach(r => r.addEventListener('change', toggleDenominationFields));
-  document.querySelectorAll('input[name="bornAgain"]').forEach(r => r.addEventListener('change', toggleBornAgainYear));
-  document.getElementById('resetFormBtn')?.addEventListener('click', () => cancelEdit());
-  document.getElementById('cancelEditBtn')?.addEventListener('click', cancelEdit);
-
-  window.editMember = editMember;
-  window.deleteMember = deleteMember;
-
-  // Initialise
-  toggleDenominationFields();
-  toggleBornAgainYear();
+  // INIT
+  fetchChurchMembers();
+  fetchChildren();
+  toggleDenomFields();
+  toggleBornAgain();
   document.getElementById('declarationDate').valueAsDate = new Date();
-  fetchMembers();
+  // Ensure gender dropdown initial state is clean
+  if(document.getElementById('gender')) document.getElementById('gender').value = '';
 </script>
 </body>
 </html>
