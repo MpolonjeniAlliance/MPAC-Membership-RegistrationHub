@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
   <title>Mpolonjeni Alliance | Camera & Upload Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -52,22 +52,22 @@
     .btn-outline:hover { background: var(--pink); color: white; border-color: var(--pink); }
     .inline-note { font-size: 0.7rem; color: #64748b; margin-top: 6px; }
     .toast { position: fixed; bottom: 20px; right: 20px; background: var(--primary-dark); color: white; padding: 10px 20px; border-radius: 40px; display: none; z-index: 2100; font-weight: bold; box-shadow: var(--shadow); }
-    /* Camera Modal Styles */
-    .camera-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
-    .camera-container { background: #1e1e2f; border-radius: 32px; max-width: 90vw; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 35px rgba(0,0,0,0.4); text-align: center; padding: 20px; }
-    .camera-container video { width: 100%; max-height: 60vh; border-radius: 24px; background: #000; transform: scaleX(1); object-fit: cover; }
-    .camera-controls { margin-top: 20px; display: flex; gap: 16px; justify-content: center; }
+    /* Camera Modal */
+    .camera-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 10000; justify-content: center; align-items: center; backdrop-filter: blur(4px); }
+    .camera-container { background: #1e1e2f; border-radius: 32px; max-width: 95vw; max-height: 90vh; overflow: hidden; box-shadow: 0 20px 35px rgba(0,0,0,0.4); text-align: center; padding: 20px; width: 100%; }
+    .camera-container video { width: 100%; max-height: 60vh; border-radius: 24px; background: #000; object-fit: cover; transform: scaleX(1); }
+    .camera-controls { margin-top: 20px; display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
     .capture-btn { background: var(--pink); border: none; color: white; padding: 12px 28px; border-radius: 60px; font-weight: bold; cursor: pointer; font-size: 1rem; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s; }
     .close-camera { background: #2d2d3a; border: none; color: #eee; padding: 12px 28px; border-radius: 60px; font-weight: bold; cursor: pointer; }
     .close-camera:hover { background: #444; }
     .capture-btn:hover { background: #a0154b; }
+    .error-message { color: #ffb3b3; background: #7a0010; padding: 8px; border-radius: 20px; margin-top: 8px; font-size: 0.8rem; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     @media (max-width: 800px) { .phone-row { grid-template-columns: 1fr; } .form-grid { padding: 16px; } .tab-btn { padding: 6px 16px; font-size: 0.85rem; } .photo-actions { flex-direction: column; align-items: stretch; } }
   </style>
 </head>
 <body>
 <div class="container">
-  <!-- HEADER -->
   <div class="premium-header">
     <div class="logo-section">
       <div class="logo-badge"><img src="https://i.imgur.com/kTumLOY.jpg" alt="Mpolonjeni Logo" onerror="this.src='https://via.placeholder.com/54?text=MAC'"></div>
@@ -79,20 +79,19 @@
     <div class="sync-status" id="syncStatusChurch"><i class="fas fa-circle"></i> Church DB Live</div>
   </div>
 
-  <!-- TAB NAVIGATION -->
   <div class="portal-tabs">
     <button class="tab-btn active" data-tab="churchTab"><i class="fas fa-church"></i> Church Membership</button>
     <button class="tab-btn" data-tab="childrenTab"><i class="fas fa-child"></i> Children's Ministry</button>
   </div>
 
-  <!-- ======================== CHURCH MEMBERSHIP PORTAL ======================== -->
+  <!-- Church Tab -->
   <div id="churchTab" class="tab-pane active">
     <div class="glass-card">
       <div class="card-header"><h3><i class="fas fa-pen-ruler"></i> Church Member Registration Form</h3><button class="btn-outline" id="resetChurchForm"><i class="fas fa-undo-alt"></i> Clear Form</button></div>
       <form id="churchMemberForm">
         <div class="form-grid">
           <div class="form-section">
-            <h4><i class="fas fa-user-circle" style="color:var(--primary);"></i> Personal Information</h4>
+            <h4><i class="fas fa-user-circle"></i> Personal Information</h4>
             <div class="input-group"><label>Full Name & Surname *</label><input type="text" id="fullName" required></div>
             <div class="input-group"><label>Date of Birth *</label><input type="date" id="dob" required></div>
             <div class="input-group"><label>Marital Status</label><select id="maritalStatus"><option>Married</option><option>Single</option><option>Widowed</option><option>Separated</option></select></div>
@@ -101,31 +100,28 @@
             <div class="input-group"><label>ID Number *</label><input type="text" id="idNumber" required></div>
             <div class="input-group"><label>Postal Address</label><input type="text" id="postalAddress"></div>
             <div class="input-group"><label>Physical Address</label><input type="text" id="physicalAddress"></div>
-            
-            <div class="contact-header"><i class="fas fa-phone-alt" style="margin-right: 8px; color: var(--amber);"></i> Contact Details</div>
+            <div class="contact-header"><i class="fas fa-phone-alt"></i> Contact Details</div>
             <div class="phone-row">
               <div class="input-group"><label>Home</label><input type="tel" id="phoneHome"></div>
               <div class="input-group"><label>Work</label><input type="tel" id="phoneWork"></div>
               <div class="input-group"><label>Cell *</label><input type="tel" id="phoneCell" required></div>
             </div>
-            
             <div class="input-group"><label>Email *</label><input type="email" id="email" required></div>
             <div class="input-group"><label>Next of Kin</label><input type="text" id="nextOfKin"></div>
             <div class="input-group"><label>Children count</label><input type="number" id="childrenCount" min="0" value="0"></div>
-            <div id="childrenNamesContainer" class="children-names-container"></div>
-            
-            <!-- PHOTO UPLOAD + CAMERA BUTTON SIDE BY SIDE -->
+            <div id="childrenNamesContainer"></div>
+            <!-- PHOTO with Camera + Upload -->
             <div class="input-group"><label><i class="fas fa-camera"></i> Member Photo (Optional)</label>
               <div class="photo-actions">
                 <input type="file" id="photoUpload" accept="image/jpeg,image/png,image/jpg" style="flex:1;">
-                <button type="button" id="takePhotoChurchBtn" class="btn-outline" style="margin:0;"><i class="fas fa-camera-retro"></i> Take Photo</button>
+                <button type="button" id="takePhotoChurchBtn" class="btn-outline"><i class="fas fa-camera-retro"></i> Take Photo</button>
               </div>
               <div id="photoPreviewContainer"></div>
-              <small class="inline-note">Max 5MB. Take photo or upload.</small>
+              <small class="inline-note">Click "Take Photo" to use camera (requires permission). Or upload from device.</small>
             </div>
           </div>
           <div class="form-section">
-            <h4><i class="fas fa-church" style="color:var(--pink);"></i> Spiritual Information</h4>
+            <h4><i class="fas fa-church"></i> Spiritual Information</h4>
             <div class="input-group"><label>Member of any Christian denomination?</label><div class="radio-group"><label><input type="radio" name="denomMember" value="yes"> Yes</label><label><input type="radio" name="denomMember" value="no" checked> No</label></div></div>
             <div id="associateChurchGroup" style="display:none;"><div class="input-group"><label>Associate Church/Ministry</label><input type="text" id="associateChurchName"></div></div>
             <div id="pastorGroup" style="display:none;"><div class="input-group"><label>Pastor’s details</label><textarea id="pastorDetails" rows="2"></textarea></div></div>
@@ -136,11 +132,10 @@
             <div class="input-group"><label>Water baptism?</label><div class="radio-group"><label><input type="radio" name="baptised" value="yes"> Yes</label><label><input type="radio" name="baptised" value="no"> No</label></div></div>
           </div>
           <div class="form-section">
-            <h4><i class="fas fa-file-signature" style="color:var(--amber);"></i> Declaration & Commitment</h4>
+            <h4><i class="fas fa-file-signature"></i> Declaration & Commitment</h4>
             <div class="input-group"><label>I, (full name) declare truth *</label><input type="text" id="declarationName" required></div>
             <div class="input-group"><label>Declaration Date</label><input type="date" id="declarationDate" required></div>
             <div class="checkbox-label"><input type="checkbox" id="commitmentCheckbox"> <label>I submit to MPAC leadership & activities.</label></div>
-            <div class="inline-note"><i class="fas fa-info-circle"></i> By submitting, you confirm all details.</div>
           </div>
         </div>
         <div style="padding:0 28px 28px"><button type="submit" class="btn-gold" id="submitChurchBtn"><i class="fas fa-save"></i> Register Church Member</button>
@@ -149,7 +144,7 @@
     </div>
   </div>
 
-  <!-- ======================== CHILDREN'S MINISTRY REGISTRATION ======================== -->
+  <!-- Children Tab -->
   <div id="childrenTab" class="tab-pane">
     <div class="glass-card">
       <div class="card-header"><h3><i class="fas fa-children"></i> Children's Ministry Registration</h3><button class="btn-outline" id="resetChildFormBtn"><i class="fas fa-undo-alt"></i> Clear Form</button></div>
@@ -161,48 +156,24 @@
             <div class="input-group"><label>Date of Birth *</label><input type="date" id="childDob" required></div>
             <div class="input-group"><label>Gender *</label><select id="childGender" required><option value="">Select</option><option>Male</option><option>Female</option></select></div>
             <div class="input-group"><label>Area of Residence *</label><input type="text" id="childResidence" required></div>
-            <!-- Child Photo: Upload + Camera -->
             <div class="input-group"><label><i class="fas fa-camera"></i> Child Photo (Optional)</label>
               <div class="photo-actions">
                 <input type="file" id="childPhotoUpload" accept="image/jpeg,image/png,image/jpg" style="flex:1;">
-                <button type="button" id="takePhotoChildBtn" class="btn-outline" style="margin:0;"><i class="fas fa-camera-retro"></i> Take Photo</button>
+                <button type="button" id="takePhotoChildBtn" class="btn-outline"><i class="fas fa-camera-retro"></i> Take Photo</button>
               </div>
               <div id="childPhotoPreviewContainer"></div>
-              <small class="inline-note">Max 5MB. Capture or upload.</small>
+              <small class="inline-note">Use camera or upload image</small>
             </div>
           </div>
           <div class="form-section">
             <h4><i class="fas fa-hands-helping"></i> Guardianship Details</h4>
             <div class="input-group"><label>Primary Guardian Full Name *</label><input type="text" id="primaryGuardian" required></div>
-            <div class="input-group"><label>Relationship to Child *</label>
-              <select id="guardianRelation" required>
-                <option value="">Select relationship</option>
-                <option>Biological parent</option>
-                <option>Grandparent</option>
-                <option>Siblings</option>
-                <option>Other relative</option>
-                <option>Legal guardian</option>
-              </select>
-            </div>
+            <div class="input-group"><label>Relationship to Child *</label><select id="guardianRelation" required><option value="">Select</option><option>Biological parent</option><option>Grandparent</option><option>Siblings</option><option>Other relative</option><option>Legal guardian</option></select></div>
           </div>
           <div class="form-section">
             <h4><i class="fas fa-school"></i> School & Grade</h4>
-            <div class="input-group">
-              <label>School Name <span style="font-weight: normal; text-transform: none;">(optional - leave blank if not applicable)</span></label>
-              <input type="text" id="schoolName" placeholder="e.g., Mpolonjeni Primary">
-              <small class="inline-note">If you provide a school name, you will be asked to select the child's grade.</small>
-            </div>
-            <div class="input-group" id="gradeGroup" style="display:none;">
-              <label>Current Grade *</label>
-              <select id="childGrade">
-                <option value="">Select grade</option>
-                <option>Grade 0</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option>
-                <option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option>
-                <option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option>
-                <option>Grade 12</option>
-              </select>
-            </div>
-            <div class="inline-note"><i class="fas fa-heart"></i> We value every child's spiritual growth</div>
+            <div class="input-group"><label>School Name (optional)</label><input type="text" id="schoolName" placeholder="e.g., Mpolonjeni Primary"></div>
+            <div class="input-group" id="gradeGroup" style="display:none;"><label>Current Grade *</label><select id="childGrade"><option value="">Select grade</option><option>Grade 0</option><option>Grade 1</option><option>Grade 2</option><option>Grade 3</option><option>Grade 4</option><option>Grade 5</option><option>Grade 6</option><option>Grade 7</option><option>Grade 8</option><option>Grade 9</option><option>Grade 10</option><option>Grade 11</option><option>Grade 12</option></select></div>
           </div>
         </div>
         <div style="padding:0 28px 28px"><button type="submit" class="btn-gold" id="submitChildBtn"><i class="fas fa-save"></i> Register Child</button></div>
@@ -211,7 +182,7 @@
   </div>
 </div>
 
-<!-- CAMERA MODAL (shared for church & child) -->
+<!-- Camera Modal -->
 <div id="cameraModal" class="camera-modal">
   <div class="camera-container">
     <video id="cameraVideo" autoplay playsinline></video>
@@ -219,32 +190,30 @@
       <button id="capturePhotoBtn" class="capture-btn"><i class="fas fa-camera"></i> Capture</button>
       <button id="closeCameraBtn" class="close-camera"><i class="fas fa-times"></i> Cancel</button>
     </div>
+    <div id="cameraErrorMsg" class="error-message" style="display:none;"></div>
   </div>
 </div>
 
 <div id="toast" class="toast"></div>
 
 <script>
-  // -------------------- GLOBALS (preserve original logic) --------------------
+  // ======================== CONFIG ========================
   const API_BASE = "https://script.google.com/macros/s/AKfycbxjYggZ5BFK3mnqLRPUY95lGZEibx3UhhtsGzUh1Um10grWcCMfnBJC36rAHtyVwKSb/exec";
   
-  // ========== CHURCH LOGIC ==========
-  let churchMembers = [];
-  let editChurchId = null;
-  let currentPhotoBase64 = null;
-  let isSavingChurch = false;
-  
-  // ========== CHILDREN LOGIC ==========
-  let childrenArray = [];
-  let editChildId = null;
-  let currentChildPhotoBase64 = null;
-  let isSavingChild = false;
-  
-  // ========== CAMERA UTILITIES ==========
+  // ========== GLOBAL CAMERA HANDLER ==========
   let activeCameraStream = null;
-  let activeCameraTarget = null;   // 'church' or 'child'
+  let activeTarget = null; // 'church' or 'child'
   const cameraModal = document.getElementById('cameraModal');
   const cameraVideo = document.getElementById('cameraVideo');
+  const cameraErrorMsg = document.getElementById('cameraErrorMsg');
+  
+  function showToast(msg, isErr = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    t.style.background = isErr ? '#C2185B' : '#0033CC';
+    setTimeout(() => t.style.display = 'none', 3000);
+  }
   
   async function stopCameraStream() {
     if (activeCameraStream) {
@@ -255,52 +224,74 @@
   }
   
   async function openCamera(targetType) {
-    activeCameraTarget = targetType;
+    activeTarget = targetType;
+    cameraErrorMsg.style.display = 'none';
+    cameraErrorMsg.innerText = '';
+    
+    // Check if running on insecure origin (http) - many browsers block camera unless localhost
+    if (location.protocol !== 'https:' && location.hostname !== 'localhost' && !location.hostname.startsWith('127.0.0.1')) {
+      cameraErrorMsg.innerText = '⚠️ Camera access requires HTTPS or localhost. Please use file upload instead.';
+      cameraErrorMsg.style.display = 'block';
+      showToast('Camera requires secure context (HTTPS). Use file upload.', true);
+      return;
+    }
+    
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' } });
       activeCameraStream = stream;
       cameraVideo.srcObject = stream;
       cameraModal.style.display = 'flex';
     } catch (err) {
       console.error('Camera error:', err);
-      showToast('Could not access camera. Please allow permissions or use file upload.', true);
+      let errorText = 'Could not access camera. ';
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        errorText += 'Permission denied. Please allow camera access in your browser settings, then reload and try again.';
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        errorText += 'No camera found on this device.';
+      } else if (err.name === 'NotReadableError') {
+        errorText += 'Camera is already in use by another application.';
+      } else {
+        errorText += 'Unknown error. Please use file upload.';
+      }
+      showToast(errorText, true);
+      cameraErrorMsg.innerText = errorText;
+      cameraErrorMsg.style.display = 'block';
+      setTimeout(() => { if (cameraModal.style.display === 'flex') closeCamera(); }, 3000);
     }
   }
   
   function closeCamera() {
     cameraModal.style.display = 'none';
     stopCameraStream();
-    activeCameraTarget = null;
+    activeTarget = null;
+    cameraErrorMsg.style.display = 'none';
   }
   
   function capturePhotoAndAssign() {
-    if (!activeCameraStream || !cameraVideo) {
-      showToast('Camera not ready', true);
+    if (!activeCameraStream || !cameraVideo || cameraVideo.readyState !== 4) {
+      showToast('Camera not ready. Please wait or retry.', true);
       return;
     }
     const canvas = document.createElement('canvas');
-    const videoElem = cameraVideo;
-    canvas.width = videoElem.videoWidth;
-    canvas.height = videoElem.videoHeight;
+    const video = cameraVideo;
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
     const ctx = canvas.getContext('2d');
-    ctx.drawImage(videoElem, 0, 0, canvas.width, canvas.height);
-    // convert to JPEG base64
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
     const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
     const base64Data = dataUrl.split(',')[1];
     
-    if (activeCameraTarget === 'church') {
-      currentPhotoBase64 = base64Data;
+    if (activeTarget === 'church') {
+      window.currentChurchPhotoBase64 = base64Data;
       const previewDiv = document.getElementById('photoPreviewContainer');
-      previewDiv.innerHTML = `<img src="${dataUrl}" class="photo-preview" alt="church photo preview">`;
-      // Clear file input value to avoid confusion
+      previewDiv.innerHTML = `<img src="${dataUrl}" class="photo-preview" alt="church photo">`;
       const fileInput = document.getElementById('photoUpload');
       if (fileInput) fileInput.value = '';
       showToast('Photo captured for Church Member');
-    } 
-    else if (activeCameraTarget === 'child') {
-      currentChildPhotoBase64 = base64Data;
+    } else if (activeTarget === 'child') {
+      window.currentChildPhotoBase64 = base64Data;
       const previewDiv = document.getElementById('childPhotoPreviewContainer');
-      previewDiv.innerHTML = `<img src="${dataUrl}" class="photo-preview" alt="child photo preview">`;
+      previewDiv.innerHTML = `<img src="${dataUrl}" class="photo-preview" alt="child photo">`;
       const fileInput = document.getElementById('childPhotoUpload');
       if (fileInput) fileInput.value = '';
       showToast('Photo captured for Child');
@@ -308,23 +299,25 @@
     closeCamera();
   }
   
-  // --- Helper toasts & common functions
-  function showToast(msg, isErr = false) { 
-    const t = document.getElementById('toast'); 
-    t.textContent = msg; 
-    t.style.display = 'block'; 
-    t.style.background = isErr ? '#C2185B' : '#0033CC'; 
-    setTimeout(() => t.style.display = 'none', 3000); 
-  }
+  // Attach camera UI events
+  document.getElementById('takePhotoChurchBtn').addEventListener('click', () => openCamera('church'));
+  document.getElementById('takePhotoChildBtn').addEventListener('click', () => openCamera('child'));
+  document.getElementById('capturePhotoBtn').addEventListener('click', capturePhotoAndAssign);
+  document.getElementById('closeCameraBtn').addEventListener('click', closeCamera);
   
-  // ******************** CHURCH MEMBERS METHODS (existing + preserve gender/photo) *******************
-  async function fetchChurchMembers() { /* same as original but minor adjust */
+  // ========== CHURCH MEMBERS LOGIC (with photo integration) ==========
+  let churchMembers = [];
+  let editChurchId = null;
+  let isSavingChurch = false;
+  window.currentChurchPhotoBase64 = null;
+  
+  async function fetchChurchMembers() {
     try {
       const res = await fetch(`${API_BASE}?action=list&_=${Date.now()}`);
       if (!res.ok) throw new Error();
       const json = await res.json();
       if (json.status === 'success' && Array.isArray(json.data)) {
-        churchMembers = json.data.map(m => ({ ...m, registrationDate: m.registrationDate || new Date().toISOString() }));
+        churchMembers = json.data;
         localStorage.setItem('mpac_church_backup', JSON.stringify(churchMembers));
         document.getElementById('syncStatusChurch').innerHTML = '<i class="fas fa-circle"></i> Church DB Live';
       } else throw new Error();
@@ -334,58 +327,291 @@
       churchMembers = backup ? JSON.parse(backup) : [];
     }
   }
-  async function addChurchMember(data) { try { await fetch(API_BASE, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'add', ...data }), headers: { 'Content-Type': 'application/json' } }); return true; } catch(e) { return false; } }
-  async function updateChurchMember(id, data) { try { await fetch(API_BASE, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'update', id, ...data }), headers: { 'Content-Type': 'application/json' } }); return true; } catch(e) { return false; } }
-  async function deleteChurchMemberRemote(id) { try { await fetch(`${API_BASE}?action=delete&id=${id}`, { mode: 'no-cors' }); return true; } catch(e) { return false; } }
-  window.deleteChurchMember = async function(id) { if (!confirm('Permanently delete church member?')) return; await deleteChurchMemberRemote(id); churchMembers = churchMembers.filter(m => m.id !== id); localStorage.setItem('mpac_church_backup', JSON.stringify(churchMembers)); await fetchChurchMembers(); showToast('Church member deleted'); if (editChurchId === id) cancelChurchEdit(); };
-  window.editChurchMember = function(id) { /* gender handling included */ const m = churchMembers.find(x => x.id === id); if (!m) return; editChurchId = id; document.getElementById('fullName').value = m.fullName || ''; document.getElementById('dob').value = m.dob || ''; document.getElementById('maritalStatus').value = m.maritalStatus || 'Married'; document.getElementById('gender').value = m.gender || ''; document.getElementById('placeOfBirth').value = m.placeOfBirth || ''; document.getElementById('idNumber').value = m.idNumber || ''; document.getElementById('postalAddress').value = m.postalAddress || ''; document.getElementById('physicalAddress').value = m.physicalAddress || ''; document.getElementById('phoneHome').value = m.phoneHome || ''; document.getElementById('phoneWork').value = m.phoneWork || ''; document.getElementById('phoneCell').value = m.phoneCell || ''; document.getElementById('email').value = m.email || ''; document.getElementById('nextOfKin').value = m.nextOfKin || ''; document.getElementById('childrenCount').value = m.childrenCount || 0; generateChildrenFields(parseInt(m.childrenCount) || 0, m.childrenNames); if (m.memberOfDenomination === 'yes') document.querySelector('input[name="denomMember"][value="yes"]').checked = true; else document.querySelector('input[name="denomMember"][value="no"]').checked = true; toggleDenomFields(); document.getElementById('associateChurchName').value = m.associateChurchName || ''; document.getElementById('pastorDetails').value = m.pastorDetails || ''; if (m.isBornAgain === 'yes') document.querySelector('input[name="bornAgain"][value="yes"]').checked = true; else document.querySelector('input[name="bornAgain"][value="no"]').checked = true; toggleBornAgain(); document.getElementById('bornAgainYear').value = m.bornAgainYear || ''; document.getElementById('churchDesire').value = m.churchDesire || ''; document.getElementById('churchInvolvement').value = m.churchInvolvement || ''; if (m.isBaptised === 'yes') document.querySelector('input[name="baptised"][value="yes"]').checked = true; else if (m.isBaptised === 'no') document.querySelector('input[name="baptised"][value="no"]').checked = true; document.getElementById('declarationName').value = m.declarationName || ''; document.getElementById('declarationDate').value = m.declarationDate || ''; document.getElementById('commitmentCheckbox').checked = m.commitmentAgreed === true; if (m.photoBase64) { currentPhotoBase64 = m.photoBase64; document.getElementById('photoPreviewContainer').innerHTML = `<img src="data:image/jpeg;base64,${m.photoBase64}" class="photo-preview">`; } else resetPhotoPreviewChurch(); document.getElementById('submitChurchBtn').innerHTML = '<i class="fas fa-edit"></i> Update Member'; document.getElementById('cancelChurchEdit').style.display = 'inline-block'; };
-  function cancelChurchEdit() { editChurchId = null; resetChurchForm(); document.getElementById('submitChurchBtn').innerHTML = '<i class="fas fa-save"></i> Register Church Member'; document.getElementById('cancelChurchEdit').style.display = 'none'; currentPhotoBase64 = null; resetPhotoPreviewChurch(); }
-  function resetPhotoPreviewChurch() { document.getElementById('photoPreviewContainer').innerHTML = ''; currentPhotoBase64 = null; }
-  function resetChurchForm() { 
-    document.getElementById('churchMemberForm').reset(); 
-    document.getElementById('declarationDate').valueAsDate = new Date(); 
-    document.getElementById('childrenCount').value = 0; 
-    generateChildrenFields(0, ''); 
-    document.querySelector('input[name="denomMember"][value="no"]').checked = true; 
-    toggleDenomFields(); 
-    document.querySelector('input[name="bornAgain"][value="no"]').checked = true; 
-    toggleBornAgain(); 
-    currentPhotoBase64 = null; 
-    document.getElementById('photoUpload').value = ''; 
-    resetPhotoPreviewChurch();
-    const genderSelect = document.getElementById('gender');
-    if (genderSelect) genderSelect.value = '';
-  }
-  function generateChildrenFields(count, existingNamesStr='') { const container = document.getElementById('childrenNamesContainer'); container.innerHTML = ''; if (count <= 0) return; const names = existingNamesStr ? existingNamesStr.split(',') : []; for(let i=1;i<=count;i++){ const div = document.createElement('div'); div.className = 'child-name-input'; div.innerHTML = `<label style="font-size:0.7rem;font-weight:700;">Child ${i} Name</label><input type="text" placeholder="Full name" value="${names[i-1]||''}" style="width:100%;padding:8px;border-radius:16px;">`; container.appendChild(div); } }
-  function getChildrenNames() { const inputs = document.querySelectorAll('#childrenNamesContainer input'); return Array.from(inputs).map(i=>i.value.trim()).filter(v=>v).join(','); }
-  function toggleDenomFields() { const isYes = document.querySelector('input[name="denomMember"]:checked').value === 'yes'; document.getElementById('associateChurchGroup').style.display = isYes ? 'block' : 'none'; document.getElementById('pastorGroup').style.display = isYes ? 'block' : 'none'; }
-  function toggleBornAgain() { const isBorn = document.querySelector('input[name="bornAgain"]:checked').value === 'yes'; document.getElementById('bornAgainYearGroup').style.display = isBorn ? 'block' : 'none'; }
-  function getChurchFormData() { const isDenom = document.querySelector('input[name="denomMember"]:checked').value === 'yes'; return { fullName: document.getElementById('fullName').value.trim(), dob: document.getElementById('dob').value, maritalStatus: document.getElementById('maritalStatus').value, gender: document.getElementById('gender').value, placeOfBirth: document.getElementById('placeOfBirth').value, idNumber: document.getElementById('idNumber').value.trim(), postalAddress: document.getElementById('postalAddress').value, physicalAddress: document.getElementById('physicalAddress').value, phoneHome: document.getElementById('phoneHome').value, phoneWork: document.getElementById('phoneWork').value, phoneCell: document.getElementById('phoneCell').value.trim(), email: document.getElementById('email').value.trim(), nextOfKin: document.getElementById('nextOfKin').value, childrenCount: parseInt(document.getElementById('childrenCount').value)||0, childrenNames: getChildrenNames(), memberOfDenomination: isDenom ? 'yes':'no', associateChurchName: isDenom ? document.getElementById('associateChurchName').value:'', pastorDetails: isDenom ? document.getElementById('pastorDetails').value:'', isBornAgain: document.querySelector('input[name="bornAgain"]:checked').value, bornAgainYear: document.getElementById('bornAgainYear').value, churchDesire: document.getElementById('churchDesire').value, churchInvolvement: document.getElementById('churchInvolvement').value, isBaptised: document.querySelector('input[name="baptised"]:checked')?.value||'', declarationName: document.getElementById('declarationName').value.trim(), declarationDate: document.getElementById('declarationDate').value, commitmentAgreed: document.getElementById('commitmentCheckbox').checked, registrationDate: new Date().toISOString(), photoBase64: currentPhotoBase64 || undefined }; }
-  document.getElementById('churchMemberForm').addEventListener('submit', async (e) => { e.preventDefault(); if(isSavingChurch) return; const data = getChurchFormData(); if(!data.fullName || !data.idNumber || !data.phoneCell || !data.email.includes('@') || !data.dob || !data.declarationName || !data.commitmentAgreed) { showToast('Please fill required fields: Full Name, ID, Cell, valid Email, DOB, Declaration', true); return; } if(!data.gender) { showToast('Please select Gender', true); return; } isSavingChurch=true; const btn=document.getElementById('submitChurchBtn'); const orig=btn.innerHTML; btn.innerHTML='<i class="fas fa-spinner fa-pulse"></i> Saving...'; btn.disabled=true; try { if(editChurchId) await updateChurchMember(editChurchId, data); else await addChurchMember(data); await fetchChurchMembers(); showToast(editChurchId?'Member updated!':'Member registered!'); if(editChurchId) cancelChurchEdit(); else resetChurchForm(); } catch(err){ showToast('Network issue', true); } finally { btn.innerHTML=orig; btn.disabled=false; isSavingChurch=false; } });
-  document.getElementById('photoUpload').addEventListener('change', async function(e) { const file=e.target.files[0]; if(!file){ currentPhotoBase64=null; resetPhotoPreviewChurch(); return; } if(file.size>5*1024*1024){ showToast('Max 5MB', true); this.value=''; return; } const reader = new FileReader(); reader.onload = (ev) => { currentPhotoBase64 = ev.target.result.split(',')[1]; document.getElementById('photoPreviewContainer').innerHTML = `<img src="${ev.target.result}" class="photo-preview">`; }; reader.readAsDataURL(file); });
-  document.getElementById('childrenCount').addEventListener('input', e => generateChildrenFields(parseInt(e.target.value)||0,''));
-  document.querySelectorAll('input[name="denomMember"]').forEach(r=>r.addEventListener('change',toggleDenomFields));
-  document.querySelectorAll('input[name="bornAgain"]').forEach(r=>r.addEventListener('change',toggleBornAgain));
-  document.getElementById('resetChurchForm').addEventListener('click',()=>cancelChurchEdit());
-  document.getElementById('cancelChurchEdit').addEventListener('click',cancelChurchEdit);
   
-  // ******************** CHILDREN LOGIC (with camera support) ********************
-  async function fetchChildren() { try { const res = await fetch(`${API_BASE}?action=listChildren&_=${Date.now()}`); if (!res.ok) throw new Error(); const json = await res.json(); if (json.status === 'success' && Array.isArray(json.data)) { childrenArray = json.data; localStorage.setItem('mpac_children_backup', JSON.stringify(childrenArray)); } else throw new Error(); } catch (err) { const backup = localStorage.getItem('mpac_children_backup'); childrenArray = backup ? JSON.parse(backup) : []; } }
-  async function addChildToAPI(childData) { try { await fetch(API_BASE, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'addChild', ...childData }), headers: { 'Content-Type': 'application/json' } }); return true; } catch(e) { return false; } }
-  function resetChildForm() { document.getElementById('childRegistrationForm').reset(); document.getElementById('gradeGroup').style.display = 'none'; editChildId = null; currentChildPhotoBase64 = null; document.getElementById('childPhotoUpload').value = ''; document.getElementById('childPhotoPreviewContainer').innerHTML = ''; document.getElementById('submitChildBtn').innerHTML = '<i class="fas fa-save"></i> Register Child'; }
-  function toggleGradeField() { const schoolVal = document.getElementById('schoolName').value.trim(); document.getElementById('gradeGroup').style.display = schoolVal !== '' ? 'block' : 'none'; }
+  async function addChurchMember(data) {
+    try {
+      await fetch(API_BASE, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'add', ...data }), headers: { 'Content-Type': 'application/json' } });
+      return true;
+    } catch(e) { return false; }
+  }
+  async function updateChurchMember(id, data) {
+    try {
+      await fetch(API_BASE, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'update', id, ...data }), headers: { 'Content-Type': 'application/json' } });
+      return true;
+    } catch(e) { return false; }
+  }
+  async function deleteChurchMemberRemote(id) {
+    try {
+      await fetch(`${API_BASE}?action=delete&id=${id}`, { mode: 'no-cors' });
+      return true;
+    } catch(e) { return false; }
+  }
+  
+  window.deleteChurchMember = async function(id) {
+    if (!confirm('Permanently delete church member?')) return;
+    await deleteChurchMemberRemote(id);
+    churchMembers = churchMembers.filter(m => m.id !== id);
+    localStorage.setItem('mpac_church_backup', JSON.stringify(churchMembers));
+    await fetchChurchMembers();
+    showToast('Church member deleted');
+    if (editChurchId === id) cancelChurchEdit();
+  };
+  
+  window.editChurchMember = function(id) {
+    const m = churchMembers.find(x => x.id === id);
+    if (!m) return;
+    editChurchId = id;
+    document.getElementById('fullName').value = m.fullName || '';
+    document.getElementById('dob').value = m.dob || '';
+    document.getElementById('maritalStatus').value = m.maritalStatus || 'Married';
+    document.getElementById('gender').value = m.gender || '';
+    document.getElementById('placeOfBirth').value = m.placeOfBirth || '';
+    document.getElementById('idNumber').value = m.idNumber || '';
+    document.getElementById('postalAddress').value = m.postalAddress || '';
+    document.getElementById('physicalAddress').value = m.physicalAddress || '';
+    document.getElementById('phoneHome').value = m.phoneHome || '';
+    document.getElementById('phoneWork').value = m.phoneWork || '';
+    document.getElementById('phoneCell').value = m.phoneCell || '';
+    document.getElementById('email').value = m.email || '';
+    document.getElementById('nextOfKin').value = m.nextOfKin || '';
+    document.getElementById('childrenCount').value = m.childrenCount || 0;
+    generateChildrenFields(parseInt(m.childrenCount) || 0, m.childrenNames);
+    if (m.memberOfDenomination === 'yes') document.querySelector('input[name="denomMember"][value="yes"]').checked = true;
+    else document.querySelector('input[name="denomMember"][value="no"]').checked = true;
+    toggleDenomFields();
+    document.getElementById('associateChurchName').value = m.associateChurchName || '';
+    document.getElementById('pastorDetails').value = m.pastorDetails || '';
+    if (m.isBornAgain === 'yes') document.querySelector('input[name="bornAgain"][value="yes"]').checked = true;
+    else document.querySelector('input[name="bornAgain"][value="no"]').checked = true;
+    toggleBornAgain();
+    document.getElementById('bornAgainYear').value = m.bornAgainYear || '';
+    document.getElementById('churchDesire').value = m.churchDesire || '';
+    document.getElementById('churchInvolvement').value = m.churchInvolvement || '';
+    if (m.isBaptised === 'yes') document.querySelector('input[name="baptised"][value="yes"]').checked = true;
+    else if (m.isBaptised === 'no') document.querySelector('input[name="baptised"][value="no"]').checked = true;
+    document.getElementById('declarationName').value = m.declarationName || '';
+    document.getElementById('declarationDate').value = m.declarationDate || '';
+    document.getElementById('commitmentCheckbox').checked = m.commitmentAgreed === true;
+    if (m.photoBase64) {
+      window.currentChurchPhotoBase64 = m.photoBase64;
+      document.getElementById('photoPreviewContainer').innerHTML = `<img src="data:image/jpeg;base64,${m.photoBase64}" class="photo-preview">`;
+    } else resetChurchPhotoPreview();
+    document.getElementById('submitChurchBtn').innerHTML = '<i class="fas fa-edit"></i> Update Member';
+    document.getElementById('cancelChurchEdit').style.display = 'inline-block';
+  };
+  
+  function cancelChurchEdit() {
+    editChurchId = null;
+    resetChurchForm();
+    document.getElementById('submitChurchBtn').innerHTML = '<i class="fas fa-save"></i> Register Church Member';
+    document.getElementById('cancelChurchEdit').style.display = 'none';
+    window.currentChurchPhotoBase64 = null;
+    resetChurchPhotoPreview();
+  }
+  function resetChurchPhotoPreview() { document.getElementById('photoPreviewContainer').innerHTML = ''; }
+  
+  function resetChurchForm() {
+    document.getElementById('churchMemberForm').reset();
+    document.getElementById('declarationDate').valueAsDate = new Date();
+    document.getElementById('childrenCount').value = 0;
+    generateChildrenFields(0, '');
+    document.querySelector('input[name="denomMember"][value="no"]').checked = true;
+    toggleDenomFields();
+    document.querySelector('input[name="bornAgain"][value="no"]').checked = true;
+    toggleBornAgain();
+    window.currentChurchPhotoBase64 = null;
+    document.getElementById('photoUpload').value = '';
+    resetChurchPhotoPreview();
+    document.getElementById('gender').value = '';
+  }
+  
+  function generateChildrenFields(count, existingNamesStr = '') {
+    const container = document.getElementById('childrenNamesContainer');
+    container.innerHTML = '';
+    if (count <= 0) return;
+    const names = existingNamesStr ? existingNamesStr.split(',') : [];
+    for (let i = 1; i <= count; i++) {
+      const div = document.createElement('div');
+      div.className = 'child-name-input';
+      div.innerHTML = `<label style="font-size:0.7rem;font-weight:700;">Child ${i} Name</label><input type="text" placeholder="Full name" value="${names[i-1] || ''}" style="width:100%;padding:8px;border-radius:16px;">`;
+      container.appendChild(div);
+    }
+  }
+  function getChildrenNames() {
+    const inputs = document.querySelectorAll('#childrenNamesContainer input');
+    return Array.from(inputs).map(i => i.value.trim()).filter(v => v).join(',');
+  }
+  function toggleDenomFields() {
+    const isYes = document.querySelector('input[name="denomMember"]:checked').value === 'yes';
+    document.getElementById('associateChurchGroup').style.display = isYes ? 'block' : 'none';
+    document.getElementById('pastorGroup').style.display = isYes ? 'block' : 'none';
+  }
+  function toggleBornAgain() {
+    const isBorn = document.querySelector('input[name="bornAgain"]:checked').value === 'yes';
+    document.getElementById('bornAgainYearGroup').style.display = isBorn ? 'block' : 'none';
+  }
+  function getChurchFormData() {
+    const isDenom = document.querySelector('input[name="denomMember"]:checked').value === 'yes';
+    return {
+      fullName: document.getElementById('fullName').value.trim(),
+      dob: document.getElementById('dob').value,
+      maritalStatus: document.getElementById('maritalStatus').value,
+      gender: document.getElementById('gender').value,
+      placeOfBirth: document.getElementById('placeOfBirth').value,
+      idNumber: document.getElementById('idNumber').value.trim(),
+      postalAddress: document.getElementById('postalAddress').value,
+      physicalAddress: document.getElementById('physicalAddress').value,
+      phoneHome: document.getElementById('phoneHome').value,
+      phoneWork: document.getElementById('phoneWork').value,
+      phoneCell: document.getElementById('phoneCell').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      nextOfKin: document.getElementById('nextOfKin').value,
+      childrenCount: parseInt(document.getElementById('childrenCount').value) || 0,
+      childrenNames: getChildrenNames(),
+      memberOfDenomination: isDenom ? 'yes' : 'no',
+      associateChurchName: isDenom ? document.getElementById('associateChurchName').value : '',
+      pastorDetails: isDenom ? document.getElementById('pastorDetails').value : '',
+      isBornAgain: document.querySelector('input[name="bornAgain"]:checked').value,
+      bornAgainYear: document.getElementById('bornAgainYear').value,
+      churchDesire: document.getElementById('churchDesire').value,
+      churchInvolvement: document.getElementById('churchInvolvement').value,
+      isBaptised: document.querySelector('input[name="baptised"]:checked')?.value || '',
+      declarationName: document.getElementById('declarationName').value.trim(),
+      declarationDate: document.getElementById('declarationDate').value,
+      commitmentAgreed: document.getElementById('commitmentCheckbox').checked,
+      registrationDate: new Date().toISOString(),
+      photoBase64: window.currentChurchPhotoBase64 || undefined
+    };
+  }
+  
+  document.getElementById('churchMemberForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (isSavingChurch) return;
+    const data = getChurchFormData();
+    if (!data.fullName || !data.idNumber || !data.phoneCell || !data.email.includes('@') || !data.dob || !data.declarationName || !data.commitmentAgreed) {
+      showToast('Please fill required fields: Full Name, ID, Cell, valid Email, DOB, Declaration', true);
+      return;
+    }
+    if (!data.gender) { showToast('Please select Gender', true); return; }
+    isSavingChurch = true;
+    const btn = document.getElementById('submitChurchBtn');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Saving...';
+    btn.disabled = true;
+    try {
+      if (editChurchId) await updateChurchMember(editChurchId, data);
+      else await addChurchMember(data);
+      await fetchChurchMembers();
+      showToast(editChurchId ? 'Member updated!' : 'Member registered!');
+      if (editChurchId) cancelChurchEdit();
+      else resetChurchForm();
+    } catch (err) { showToast('Network issue', true); }
+    finally { btn.innerHTML = orig; btn.disabled = false; isSavingChurch = false; }
+  });
+  
+  document.getElementById('photoUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) { window.currentChurchPhotoBase64 = null; resetChurchPhotoPreview(); return; }
+    if (file.size > 5 * 1024 * 1024) { showToast('Max 5MB', true); this.value = ''; return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      window.currentChurchPhotoBase64 = ev.target.result.split(',')[1];
+      document.getElementById('photoPreviewContainer').innerHTML = `<img src="${ev.target.result}" class="photo-preview">`;
+    };
+    reader.readAsDataURL(file);
+  });
+  
+  document.getElementById('childrenCount').addEventListener('input', e => generateChildrenFields(parseInt(e.target.value) || 0, ''));
+  document.querySelectorAll('input[name="denomMember"]').forEach(r => r.addEventListener('change', toggleDenomFields));
+  document.querySelectorAll('input[name="bornAgain"]').forEach(r => r.addEventListener('change', toggleBornAgain));
+  document.getElementById('resetChurchForm').addEventListener('click', () => cancelChurchEdit());
+  document.getElementById('cancelChurchEdit').addEventListener('click', cancelChurchEdit);
+  
+  // ========== CHILDREN MINISTRY (with photo) ==========
+  let childrenArray = [];
+  let isSavingChild = false;
+  window.currentChildPhotoBase64 = null;
+  
+  async function fetchChildren() {
+    try {
+      const res = await fetch(`${API_BASE}?action=listChildren&_=${Date.now()}`);
+      if (!res.ok) throw new Error();
+      const json = await res.json();
+      if (json.status === 'success' && Array.isArray(json.data)) {
+        childrenArray = json.data;
+        localStorage.setItem('mpac_children_backup', JSON.stringify(childrenArray));
+      } else throw new Error();
+    } catch (err) {
+      const backup = localStorage.getItem('mpac_children_backup');
+      childrenArray = backup ? JSON.parse(backup) : [];
+    }
+  }
+  async function addChildToAPI(childData) {
+    try {
+      await fetch(API_BASE, { method: 'POST', mode: 'no-cors', body: JSON.stringify({ action: 'addChild', ...childData }), headers: { 'Content-Type': 'application/json' } });
+      return true;
+    } catch(e) { return false; }
+  }
+  function resetChildForm() {
+    document.getElementById('childRegistrationForm').reset();
+    document.getElementById('gradeGroup').style.display = 'none';
+    window.currentChildPhotoBase64 = null;
+    document.getElementById('childPhotoUpload').value = '';
+    document.getElementById('childPhotoPreviewContainer').innerHTML = '';
+  }
+  function toggleGradeField() {
+    const schoolVal = document.getElementById('schoolName').value.trim();
+    document.getElementById('gradeGroup').style.display = schoolVal !== '' ? 'block' : 'none';
+  }
   document.getElementById('resetChildFormBtn').addEventListener('click', resetChildForm);
   document.getElementById('schoolName').addEventListener('input', toggleGradeField);
-  document.getElementById('childPhotoUpload').addEventListener('change', function(e) { const file = e.target.files[0]; if (!file) { currentChildPhotoBase64 = null; document.getElementById('childPhotoPreviewContainer').innerHTML = ''; return; } if (file.size > 5 * 1024 * 1024) { showToast('Photo too large (max 5MB)', true); this.value = ''; return; } const reader = new FileReader(); reader.onload = (ev) => { currentChildPhotoBase64 = ev.target.result.split(',')[1]; document.getElementById('childPhotoPreviewContainer').innerHTML = `<img src="${ev.target.result}" class="photo-preview" alt="Child preview">`; }; reader.readAsDataURL(file); });
-  document.getElementById('childRegistrationForm').addEventListener('submit', async (e) => { e.preventDefault(); if (isSavingChild) return; const fullName = document.getElementById('childFullName').value.trim(); const dob = document.getElementById('childDob').value; const gender = document.getElementById('childGender').value; const residence = document.getElementById('childResidence').value.trim(); const primaryGuardian = document.getElementById('primaryGuardian').value.trim(); const relation = document.getElementById('guardianRelation').value; const schoolName = document.getElementById('schoolName').value.trim(); let grade = ''; if (schoolName) grade = document.getElementById('childGrade').value; if (!fullName || !dob || !gender || !residence || !primaryGuardian || !relation) { showToast('Please fill all required fields (*)', true); return; } const childData = { fullName, dob, gender, residence, primaryGuardian, relation, schoolName: schoolName || '', grade: grade || '', registrationDate: new Date().toISOString(), photoBase64: currentChildPhotoBase64 || null }; isSavingChild = true; const btn = document.getElementById('submitChildBtn'); const origText = btn.innerHTML; btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Saving...'; btn.disabled = true; try { let success = await addChildToAPI(childData); if (success) { showToast('Child registered successfully!'); await fetchChildren(); resetChildForm(); } else { showToast('Error saving child.', true); } } catch (err) { showToast('Network error', true); } finally { btn.innerHTML = origText; btn.disabled = false; isSavingChild = false; } });
+  document.getElementById('childPhotoUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) { window.currentChildPhotoBase64 = null; document.getElementById('childPhotoPreviewContainer').innerHTML = ''; return; }
+    if (file.size > 5 * 1024 * 1024) { showToast('Max 5MB', true); this.value = ''; return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      window.currentChildPhotoBase64 = ev.target.result.split(',')[1];
+      document.getElementById('childPhotoPreviewContainer').innerHTML = `<img src="${ev.target.result}" class="photo-preview">`;
+    };
+    reader.readAsDataURL(file);
+  });
+  document.getElementById('childRegistrationForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (isSavingChild) return;
+    const fullName = document.getElementById('childFullName').value.trim();
+    const dob = document.getElementById('childDob').value;
+    const gender = document.getElementById('childGender').value;
+    const residence = document.getElementById('childResidence').value.trim();
+    const primaryGuardian = document.getElementById('primaryGuardian').value.trim();
+    const relation = document.getElementById('guardianRelation').value;
+    const schoolName = document.getElementById('schoolName').value.trim();
+    let grade = '';
+    if (schoolName) grade = document.getElementById('childGrade').value;
+    if (!fullName || !dob || !gender || !residence || !primaryGuardian || !relation) {
+      showToast('Please fill all required fields (*)', true);
+      return;
+    }
+    const childData = {
+      fullName, dob, gender, residence, primaryGuardian, relation,
+      schoolName: schoolName || '', grade: grade || '',
+      registrationDate: new Date().toISOString(),
+      photoBase64: window.currentChildPhotoBase64 || null
+    };
+    isSavingChild = true;
+    const btn = document.getElementById('submitChildBtn');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Saving...';
+    btn.disabled = true;
+    try {
+      const success = await addChildToAPI(childData);
+      if (success) { showToast('Child registered!'); await fetchChildren(); resetChildForm(); }
+      else showToast('Error saving child.', true);
+    } catch (err) { showToast('Network error', true); }
+    finally { btn.innerHTML = orig; btn.disabled = false; isSavingChild = false; }
+  });
   
-  // Camera Button Triggers
-  document.getElementById('takePhotoChurchBtn').addEventListener('click', () => openCamera('church'));
-  document.getElementById('takePhotoChildBtn').addEventListener('click', () => openCamera('child'));
-  document.getElementById('capturePhotoBtn').addEventListener('click', capturePhotoAndAssign);
-  document.getElementById('closeCameraBtn').addEventListener('click', closeCamera);
-  
-  // Tab switching, preserve camera close on tab change
+  // TAB SWITCHING
   document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       if (cameraModal.style.display === 'flex') closeCamera();
@@ -394,12 +620,17 @@
       document.getElementById(tabId).classList.add('active');
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      if (tabId === 'childrenTab') fetchChildren(); else fetchChurchMembers();
+      if (tabId === 'childrenTab') fetchChildren();
+      else fetchChurchMembers();
     });
   });
   
   // INIT
-  fetchChurchMembers(); fetchChildren(); toggleDenomFields(); toggleBornAgain(); document.getElementById('declarationDate').valueAsDate = new Date();
+  fetchChurchMembers();
+  fetchChildren();
+  toggleDenomFields();
+  toggleBornAgain();
+  document.getElementById('declarationDate').valueAsDate = new Date();
 </script>
 </body>
 </html>
