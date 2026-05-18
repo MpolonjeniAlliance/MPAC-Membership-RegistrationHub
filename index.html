@@ -106,7 +106,8 @@
               <div class="input-group"><label>Work</label><input type="tel" id="phoneWork"></div>
               <div class="input-group"><label>Cell *</label><input type="tel" id="phoneCell" required></div>
             </div>
-            <div class="input-group"><label>Email *</label><input type="email" id="email" required></div>
+            <!-- EMAIL FIELD: now optional (no required attribute, label changed) -->
+            <div class="input-group"><label>Email (optional)</label><input type="email" id="email"></div>
             <div class="input-group"><label>Next of Kin</label><input type="text" id="nextOfKin"></div>
             <div class="input-group"><label>Children count</label><input type="number" id="childrenCount" min="0" value="0"></div>
             <div id="childrenNamesContainer"></div>
@@ -305,7 +306,7 @@
   document.getElementById('capturePhotoBtn').addEventListener('click', capturePhotoAndAssign);
   document.getElementById('closeCameraBtn').addEventListener('click', closeCamera);
   
-  // ========== CHURCH MEMBERS LOGIC (with photo integration) ==========
+  // ========== CHURCH MEMBERS LOGIC (with photo integration, email optional) ==========
   let churchMembers = [];
   let editChurchId = null;
   let isSavingChurch = false;
@@ -423,6 +424,7 @@
     document.getElementById('photoUpload').value = '';
     resetChurchPhotoPreview();
     document.getElementById('gender').value = '';
+    document.getElementById('email').value = ''; // clear optional email
   }
   
   function generateChildrenFields(count, existingNamesStr = '') {
@@ -488,11 +490,17 @@
     e.preventDefault();
     if (isSavingChurch) return;
     const data = getChurchFormData();
-    if (!data.fullName || !data.idNumber || !data.phoneCell || !data.email.includes('@') || !data.dob || !data.declarationName || !data.commitmentAgreed) {
-      showToast('Please fill required fields: Full Name, ID, Cell, valid Email, DOB, Declaration', true);
+    // Required fields: Full Name, ID, Cell, DOB, Declaration, checkbox, gender
+    if (!data.fullName || !data.idNumber || !data.phoneCell || !data.dob || !data.declarationName || !data.commitmentAgreed) {
+      showToast('Please fill required fields: Full Name, ID, Cell, DOB, Declaration, and agree to commitment', true);
       return;
     }
     if (!data.gender) { showToast('Please select Gender', true); return; }
+    // Email validation: only if email is provided
+    if (data.email && data.email !== '' && !data.email.includes('@')) {
+      showToast('Please provide a valid email address (e.g., name@example.com) or leave empty', true);
+      return;
+    }
     isSavingChurch = true;
     const btn = document.getElementById('submitChurchBtn');
     const orig = btn.innerHTML;
@@ -527,7 +535,7 @@
   document.getElementById('resetChurchForm').addEventListener('click', () => cancelChurchEdit());
   document.getElementById('cancelChurchEdit').addEventListener('click', cancelChurchEdit);
   
-  // ========== CHILDREN MINISTRY (with photo) ==========
+  // ========== CHILDREN MINISTRY (unchanged) ==========
   let childrenArray = [];
   let isSavingChild = false;
   window.currentChildPhotoBase64 = null;
